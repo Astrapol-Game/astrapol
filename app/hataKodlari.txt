@@ -1,0 +1,33 @@
+x-Genel hata, lütfen teknik ekibi haberdar edin
+1-Veritabanı bağlantı hatası, lütfen teknik ekibi haberdar edin
+2-İmza doğrulama başarısız (node.js ile ilgili)
+3-Geçersiz JSON formatı
+3-Eksik veya geçersiz parametreler
+4-Bağlantı hatası, lütfen teknik ekibi haberdar edin (PDOException insert, update, select)
+5-Bağlantı onaylandı
+6-Yeni bağlantı oluşturma başarılı, imza bekleniyor
+7-Bağlantı hatası, lütfen teknik ekibi haberdar edin (kritik hatalarda kullanılan genel mesaj)
+8-Geçersiz token (kullanıcıyı uyarmadan bağlantı oluşturma işlemi başlatılsın)
+9-Token geçerlilik süresi doldu (kullanıcıyı uyarmadan bağlantı oluşturma işlemi başlatılsın)
+10-Geçerli bir bağlantı yok (kullanıcıyı uyarmadan bağlantı oluşturma işlemi başlatılsın)
+11-Bağlantı hatası, lütfen teknik ekibi haberdar edin (JWT Token ile ilgili)
+12-Birden fazla aktif bağlantınız var. Lütfen teknik ekibi haberdar ediniz
+13-Bağlantı onayını vermekte gecikmiş görünüyorsunuz. Lütfen tekrar bağlantı kurmayı deneyin
+14-Bağlantı hala geçerli (kullanıcıya haber vermeden cüzdan bilgilerini html etiketlere tekrar yerleştir)
+15-Kullanıcıya ait en az bir tane DAK var, bilgileri yerleştirilebilir
+16-nesneHisseDegerAyar.php içinde transaction hatası, error_log.txt yi kontrol edin (kullanıcı için değil)
+17-DAK sahibi değilsiniz. (rakam) (token) harcayarak bir tane oluşturabilirsiniz.
+18-DAK sahibi değilsiniz. Şuan da seçtiğiniz blockchain ağına uygun NFT kontratı yoktur. Lütfen başka bir ağ deneyin
+19-JWT doğrulama hatası
+20-İşlem doğrulandı
+21-İşlem doğrulanamadı, lütfen teknik ekibi haberdar edin (token miktar veya adres veya nonce hex yanlış)
+22-Bekleyen yeni DAK ödemelerinin ağ kontrolleri tamamlandı, hatalar olduysa kayıt edildi
+23-JWT token için yeni anahtar üretimi başarılı
+24-JWT token için yeni anahtar üretimi başarısız
+25-DAK NFT mint için sunucu tarafı hazır, kullanıcıdan imza al
+26-Veri şifreleme başarılı (chainIdVeUserAdresiSifrele)
+27-Veri şifreleme başarısız (chainIdVeUserAdresiSifrele)
+28-Veri çözme başarılı (chainIdVeUserAdresiSifreCoz)
+29-Veri çözme başarısız (chainIdVeUserAdresiSifreCoz)
+30-Chain ID aynı değil (yeni dak üretimi sırasında kayitliSonDakBilgisiniGetir.php ile yeniDakMintHazirlaBaslat.php işlemleri arasında chain id aynı değil)
+31-Cüzdan adresi aynı değil (yeni dak üretimi sırasında kayitliSonDakBilgisiniGetir.php ile yeniDakMintHazirlaBaslat.php işlemleri arasında cüzdan adresi aynı değil)

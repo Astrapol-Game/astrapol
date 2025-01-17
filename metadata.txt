@@ -1,0 +1,21 @@
+https://test.astrapol.com/public/metadata/1.json
+curl -I https://test.astrapol.com/public/metadata/3.json (terminal üzerinden test etmek için)
+
+0,1 ether = 100000000000000000 wei
+
+
+kullanıcı 1
+0x1AB49da47Fa5D551F1544E8a5Ad6e38f1e12d5f5
+
+kullanıcı 2
+0xB160346Cd08E44519AD5893e19D72A725C3Dc590
+
+https://test.deneme.com/public/metadata/3.json
+
+signature
+
+uri : https://test.astrapol.com/public/metadata/1.json
+
+kontrat hash : 0x212213dda188d042a9c656cba337293350df28236df97df6547c6a51e9c902f9
+
+php hash : 0xcc31e57e5fc94ccbb1c98554178d733cd39f63ea2341466a529285524262ae89

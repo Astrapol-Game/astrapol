@@ -1,0 +1,451 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+    
+<head>
+    <meta http-equiv="origin-trial"
+        content="A/kargTFyk8MR5ueravczef/wIlTkbVk1qXQesp39nV+xNECPdLBVeYffxrM8TmZT6RArWGQVCJ0LRivD7glcAUAAACQeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IkRpc2FibGVUaGlyZFBhcnR5U3RvcmFnZVBhcnRpdGlvbmluZzIiLCJleHBpcnkiOjE3NDIzNDIzOTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launch App - Astrapol</title>
+    <link rel="stylesheet" type="text/css" href="css/style_2.css">
+    <link rel="shortcut icon" type="image/x-icon" href="images/48px.png">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="preconnect" href="https://www.google.com">
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin="">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preload" as="image" href="images/logo_astrapol.png">
+    <link rel="preload" as="image" href="images/floor3.jpg">
+    <meta property="og:site_name" content="Astrapol">
+    <meta property="og:title" content="Launch App - Astrapol">
+    <meta property="og:description" content="...">
+    <meta property="og:updated_time" content="2024-10-10T10:55:03+02:00">
+    <script src="js/launchAppMain.js"></script>
+</head>
+
+<body class="body-bg" style="overflow: visible; background-image: url('images/floor3.jpg');">
+
+    <div class="menu-button" id="menuButton">
+        ☰ Wallet
+    </div>
+    <div class="sidebar" id="sidebar">
+        <h2>Wallet Information</h2>
+        <ul>
+            <li>Address : <p id="p_cuzdanAdresi"></p></li>
+            <li>Network : <p id="p_ag"></p></li>
+            <li><button id="btn_cuzdanBagliMiBagla">Connect</button></li>
+        </ul>
+    </div>
+
+    <div class="mesajKutusu" id="divMesajKutusu">
+        <img src="images/list_left.png">
+        <div class="mesajKutusuIcerigi" id="divMesajKutusuIcerigi">Tamam</div>
+        <div class="mesajKutusuButonlar">
+            <button class="mesajKutusuTamamButonu" id="btn_mesajKutusunuKapat">
+                <img src="images/butonArkaPlanResmi.png" class="mesajKutusuButonArkaPlanResmi">
+                Ok
+            </button>
+        </div>
+    </div>
+
+    <div class="onayKutusu" id="divOnayKutusu">
+        <img src="images/list_left.png">
+        <div class="onayKutusuIcerigi" id="divOnayKutusuIcerigi"></div>
+        <div class="onayKutusuButonlar">
+            <button class="onayKutusuButonlari" id="btnOnayKutusuEvet">
+                <img src="images/butonArkaPlanResmi.png" class="onayKutusuButonArkaPlanResmi">
+                Tamam
+            </button>
+            <button class="onayKutusuButonlari" id="btnOnayKutusuHayir">
+                <img src="images/butonArkaPlanResmi.png" class="onayKutusuButonArkaPlanResmi">
+                İptal
+            </button>
+        </div>
+    </div>
+
+    <div class="dakListeMenusu" id="divDakListesiMenusu">
+        <img src="images/list_left.png">
+        <div class="dakListeMenusu_ustBaslik">
+            <button class="dakListeMenusu_ustBaslik_btnKapat" id="btnDakListeMenusunuKapat">
+                <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
+                X
+            </button>
+        </div>
+        <div class="dakListeMenusu_liste" id="divDakListeMenusu_liste"></div>
+        <div class="dakListeMenusu_butonlar">
+            <button class="dakListeMenusu_butonlar_dakOlustur" id="btnDakOlustur">
+                <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
+                New DAK Create
+            </button>
+            <button class="dakListeMenusu_butonlar_dakSec" id="btnDakSec">
+                <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
+                Level Up
+            </button>
+        </div>
+    </div>
+
+    <div class="panel_1">
+        <div class="panel_1_1">
+            <!-- burada logomuz var -->
+        </div>
+    </div>
+
+    <div class="panel_3">
+        <div class="panel_3_1">
+            <button class="panel_3_1_butonlar" id="btnDakMenusu" >
+                <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                Share Hold
+            </button>
+
+            <button class="panel_3_1_butonlar" id="btnGen2Olustur" >
+                <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                Gen2 Creator
+            </button>
+
+            <button class="panel_3_1_butonlar" id="btnItemOlustur" >
+                <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                Item Creator
+            </button>
+
+            <button class="panel_3_1_butonlar" id="btnArena" >
+                <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                Arena
+            </button>
+
+            <button class="panel_3_1_butonlar" id="btnAdventure" >
+                <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                Adventure
+            </button>
+
+            <button class="panel_3_1_butonlar" id="btnMarket" >
+                <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                Market
+            </button>
+
+            <button class="panel_3_1_butonlar" id="btnKullaniciHesabi" >
+                <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                Inventory
+            </button>
+
+            <button class="panel_3_1_butonlar" id="btnDonustur" >
+                <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                Transformation & Merge
+            </button>
+        </div>
+        <div class="panel_3_2" id="panel_3_2">
+            <div class="hisseMenusu_1">
+                <div class="dakDivi">
+                    <div class="dakResmi">
+                        <img id="dakNftResmi" src="images/gen1Key1.png">
+                    </div>
+                    <div class="dakDetaylari">
+                        <div class="dakDetaylariSatirlar">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Level =</p>
+                            <p id="dak_levelDegeri">7</p>
+                        </div>
+
+                        <div class="dakDetaylariSatirlar">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Share Weight =</p>
+                            <p id="dak_hisseAgirlikDegeri">28</p>
+                        </div>
+
+                        <div class="dakDetaylariSatirlar">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Share Weight Next Level =</p>
+                            <p id="dak_sonrakiLevelHisseAgirlikDegeri">36</p>
+                        </div>
+
+                        <div class="dakDetaylariSatirlar">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p id="dak_erisimTablosu">DAK Access Permissions</p>
+                        </div>
+                    </div>
+
+                    <div class="finansDivi">
+                        <div class="finansDiviSatirlar">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Processing Fee (AVXT) =</p>
+                            <p id="dak_islemUcreti">100</p>
+                        </div>
+                        <div class="finansDiviSatirlar">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Level Up Cost (AVAX) =</p>
+                            <p id="dak_sonrakiLevelAvaxUcreti">2,3842</p>
+                        </div>
+                        <div class="finansDiviSatirlar">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Total Discount (AVAX) =</p>
+                            <p id="dak_toplamAvaxIndirimi">0,0000</p>
+                        </div>
+                        <div class="finansDiviSatirlar">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Total Cost (AVAX) =</p>
+                            <p id="dak_toplamAvaxUcreti">2,3842</p>
+                        </div>
+                    </div>
+
+                    <div class="hisseMenusu_1_islemlerDivi">
+                        <div class="hisseMenusu_1_islemlerDiviSecim">
+                            <input type="checkbox" id="chbHepsiniSec1">
+                            <label for="chbHepsiniSec1">Select All</label>
+                        </div>
+                        
+                        <button id="btnLevelUp">
+                            <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                            <p>Level Up</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hisseMenusu_2">
+                <div class="hisseMenusu_2_filtre">
+                    <div class="hisseMenusu_2_filtreNadirlik">
+                        <div class="nadirlikEtiketi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Rarity</p>
+                        </div>
+                        <div class="nadirlikCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nadirlikCesidiEtiketi">
+                                <input type="checkbox" id="chbNadirlikSecimiRare" class="filtreCheckboxlari">
+                                <label for="chbNadirlikSecimiRare">Rare</label>
+                            </div>
+                        </div>
+                        <div class="nadirlikCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nadirlikCesidiEtiketi">
+                                <input type="checkbox" id="chbNadirlikSecimiEpic" class="filtreCheckboxlari">
+                                <label for="chbNadirlikSecimiEpic">Epic</label>
+                            </div>
+                        </div>
+                        <div class="nadirlikCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nadirlikCesidiEtiketi">
+                                <input type="checkbox" id="chbNadirlikSecimiLegend" class="filtreCheckboxlari">
+                                <label for="chbNadirlikSecimiLegend">Legend</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hisseMenusu_2_filtreNesne">
+                        <div class="nesneEtiketi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Object</p>
+                        </div>
+                        <div class="nesneCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nesneCesidiEtiketi">
+                                <input type="checkbox" id="chbNesneSecimiGen2" class="filtreCheckboxlari">
+                                <label for="chbNesneSecimiGen2">Gen2</label>
+                            </div>
+                        </div>
+                        <div class="nesneCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nesneCesidiEtiketi">
+                                <input type="checkbox" id="chbNesneSecimiArmor" class="filtreCheckboxlari">
+                                <label for="chbNesneSecimiArmor">Armor</label>
+                            </div>
+                        </div>
+                        <div class="nesneCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nesneCesidiEtiketi">
+                                <input type="checkbox" id="chbNesneSecimiVehicles" class="filtreCheckboxlari">
+                                <label for="chbNesneSecimiVehicles">Vehicles</label>
+                            </div>
+                        </div>
+                        <div class="nesneCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nesneCesidiEtiketi">
+                                <input type="checkbox" id="chbNesneSecimiRune" class="filtreCheckboxlari">
+                                <label for="chbNesneSecimiRune">Rune</label>
+                            </div>
+                        </div>
+                        <div class="nesneCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nesneCesidiEtiketi">
+                                <input type="checkbox" id="chbNesneSecimiPagm" class="filtreCheckboxlari">
+                                <label for="chbNesneSecimiPagm">PAGM</label>
+                            </div>
+                        </div>
+                        <div class="nesneCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nesneCesidiEtiketi">
+                                <input type="checkbox" id="chbNesneSecimiDgcg" class="filtreCheckboxlari">
+                                <label for="chbNesneSecimiDgcg">DGCG</label>
+                            </div>
+                        </div>
+                        <div class="nesneCesidi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="nesneCesidiEtiketi">
+                                <input type="checkbox" id="chbNesneSecimiCfg" class="filtreCheckboxlari">
+                                <label for="chbNesneSecimiCfg">CFG</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hisseMenusu_2_filtreLevel">
+                        <div class="levelEtiketi">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <p>Level</p>
+                        </div>
+                        <div class="levelDegeri">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="levelDegeriDivi">
+                                <p>Min Level</p>
+                                <input type="text" id="txtMinLevel">
+                            </div>
+                        </div>
+                        <div class="levelDegeri">
+                            <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                            <div class="levelDegeriDivi">
+                                <p>Max Level</p>
+                                <input type="text" id="txtMaxLevel">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hisseMenusu_2_filtreButonlar">
+                        <button id="btnFiyatListesi">
+                            <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                            <p>Price List</p>
+                        </button>
+                        <button id="btnListele">
+                            <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
+                            <p>Show</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="hisseMenusu_2_liste" id="hisseMenusu_2_liste">
+                    <div class="divNesneSecim">
+                        <div class="divNesneSecimResim">
+                            <img src="images/1.png" id="profilResmi">
+                            <input type="checkbox" class="chbListedekiNesne" value="secim1">
+                        </div>
+                        <div class="divNesneSecimSatirlar">
+                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
+                            <p>ID</p>
+                            <p id="nesne_id">123456</p>
+                        </div>
+                        <div class="divNesneSecimSatirlar">
+                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
+                            <p>Level</p>
+                            <p id="nesne_level">35</p>
+                        </div>
+                        <div class="divNesneSecimSatirlar">
+                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
+                            <div class="divNesneSecimNadirlikResmi">
+                                <img src="images/legend.png">
+                            </div>
+                            <div class="divNesneSecimNadirlikAdi">
+                                <p id="nesne_nadirlik">LEGEND</p>
+                            </div>
+                        </div>
+                        <div class="divNesneSecimSatirlar">
+                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
+                            <p>AVAX value =</p>
+                            <p id="nesne_avaxDegeri">0,025</p>
+                        </div>
+                    </div>
+
+                    <div class="nesneSecimKutusu">
+                        <div class="nesneSecimKutusu_resim_id_rarity_sembol">
+                            <div class="nesneSecimKutusu_resim">
+                                <img src="images/1.png" id="profilResmi">
+                                <input type="checkbox" class="chbListedekiNesne" value="secim1">
+                            </div>
+                            <div class="nesneSecimKutusu_id">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>ID</p>
+                                <p id="nesne_id">123456</p>
+                            </div>
+                            <div class="nesneSecimKutusu_rarity_sembol">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <div class="nesneSecimKutusu_rarity">
+                                    <p id="nesne_nadirlik">LEGEND</p>
+                                </div>
+                                <div class="nesneSecimKutusu_sembol">
+                                    <img src="images/legend.png">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nesneSecimKutusu_ozellikler">
+                            <div class="ozellikler_name">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p id="nesne_adi">TEST AVAXTARS</p>
+                            </div>
+                            <div class="ozellikler_level_xp">
+                                <div class="ozellikler_level">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>Level</p>
+                                    <p id="nesne_levelDegeri">75</p>
+                                </div>
+                                <div class="ozellikler_xp">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>XP</p>
+                                    <p id="nesne_xpDegeri">28600</p>
+                                </div>
+                            </div>
+                            <div class="ozellikler_dna">
+                                <div class="dna_hp">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>HP</p>
+                                    <p id="nesne_hpDegeri">999</p>
+                                </div>
+                                <div class="dna_def">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>DEF</p>
+                                    <p id="nesne_defDegeri">999</p>
+                                </div>
+                                <div class="dna_atk">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>ATK</p>
+                                    <p id="nesne_atkDegeri">999</p>
+                                </div>
+                                <div class="dna_speed">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>SPD</p>
+                                    <p id="nesne_spdDegeri">999</p>
+                                </div>
+                            </div>
+                            <div class="ozellikler_rna">
+                                <div class="rna_detaylar">
+                                    <div class="rna_genus">
+                                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                        <p>GENUS =</p>
+                                        <p id="nesne_genusDegeri">Unknown</p>
+                                    </div>
+                                    <div class="rna_code">
+                                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                        <p>CODE =</p>
+                                        <p id="nesne_codeDegeri">Unknown</p>
+                                    </div>
+                                    <div class="rna_talent">
+                                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                        <p>TALENT =</p>
+                                        <p id="nesne_talentDegeri">Unknown</p>
+                                    </div>
+                                </div>
+                                <div class="rna_sembol">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                </div>
+                            </div>
+                            <div class="ozelliklerDegerDivi">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>AVAX value =</p>
+                                <p id="nesne_avaxDegeri">0,025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

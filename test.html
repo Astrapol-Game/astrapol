@@ -1,0 +1,306 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+    
+<head>
+    <meta http-equiv="origin-trial"
+        content="A/kargTFyk8MR5ueravczef/wIlTkbVk1qXQesp39nV+xNECPdLBVeYffxrM8TmZT6RArWGQVCJ0LRivD7glcAUAAACQeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IkRpc2FibGVUaGlyZFBhcnR5U3RvcmFnZVBhcnRpdGlvbmluZzIiLCJleHBpcnkiOjE3NDIzNDIzOTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformation - Avaxtars</title>
+    <link rel="stylesheet" type="text/css" href="css/style_1.css">
+    <link rel="shortcut icon" type="image/x-icon" href="images/48px.png">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="preconnect" href="https://www.google.com">
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin="">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preload" as="image" href="images/logo_astrapol.png">
+    <link rel="preload" as="image" href="images/floor3.jpg">
+    <meta property="og:site_name" content="Avaxtars">
+    <meta property="og:title" content="Transformation - Avaxtars">
+    <meta property="og:description" content="...">
+    <meta property="og:updated_time" content="2024-10-10T10:55:03+02:00">
+    <script src="js/test.js"></script>
+</head>
+
+<body class="body-bg" style="overflow: visible; background-image: url('images/floor3.jpg');">
+    <div class="menu-button" id="menuButton">
+        ☰
+    </div>
+    <div class="sidebar" id="sidebar">
+        <h2>Wallet Information</h2>
+        <ul>
+            <li>Address : <p id="p_cuzdanAdresi"></p></li>
+            <li>Network : <p id="p_ag"></p></li>
+            <li><button id="btn_cuzdanBagliMiBagla">Connect</button></li>
+        </ul>
+    </div>
+
+    <div class="mesajKutusu" id="divMesajKutusu">
+        <img src="images/mesajKutusu.png">
+        <div class="mesajKutusuIcerigi" id="divMesajKutusuIcerigi"></div>
+        <button class="mesajKutusuTamamButonu" id="btn_mesajKutusunuKapat">Ok</button>
+    </div>
+
+    <div class="panel_1">
+        <div class="panel_1_1">
+            
+        </div>
+        <div class="panel_1_2">
+            Welcome to ASTRAPOL
+        </div>
+        <div class="panel_1_3">
+            A browser Based Idle Sci-Fi Game on Blockchain
+        </div>
+    </div>
+
+    <div class="panel_2">
+        <div class="panel_2_nesneSecimi">
+            <div class="nesneSecimi_1">
+                <p>Select Object</p>
+            </div>
+            <div class="nesneSecimi_2">
+                <select name="avaxtars_items" id="hangiNesne">
+                    <option value="gen2">GEN-2</option>
+                    <option value="armor">ARMOR</option>
+                    <option value="gloves">GLOVES</option>
+                    <option value="helmet">HELMET</option>
+                    <option value="boots">BOOTS</option>
+                </select>
+            </div>
+        </div>
+        <div class="panel_2_nadirlikSecimi">
+            <div class="nadirlikSecimi_1">
+                <p>Select Rarity</p>
+            </div>
+            <div class="nadirlikSecimi_2">
+                <select name="avaxtars_rarity" id="hangiNadirlik">
+                    <option value="scientist">SCI</option>
+                    <option value="common">COMMON</option>
+                    <option value="uncommon">UNCOMMON</option>
+                    <option value="rare">RARE</option>
+                    <option value="epic">EPIC</option>
+                    <option value="legend">LEGEND</option>
+                </select>
+            </div>
+        </div>
+        <div class="panel_2_islemler">
+            <button class="panel_2_islemler_button" id="btn_filtreyeGoreListele">List</button>
+        </div>
+    </div>
+
+    <div class="panel_3">
+        <div class="panel_3_resimliCerceveGorunumu_sol">
+            <div class="panel_3_1" id="veriyeGoreOlusanListe">
+                <div class="panel_3_1_gen2SecimKutusu">
+                    <div class="panel_3_1_gen2SecimKutusu_1_resim_id_rarity_sembol">
+                        <div class="gen2SecimKutusu_1_resim">
+                            <img src="images/1.png" id="profilResmi">
+                            <input type="checkbox" class="chbListedekiNesne" value="secim1">
+                        </div>
+                        <div class="gen2SecimKutusu_1_id">
+                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                            ID 123456
+                        </div>
+                        <div class="gen2SecimKutusu_1_rarity_sembol">
+                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                            <div class="gen2SecimKutusu_1_rarity">
+                                LEGEND
+                            </div>
+                            <div class="gen2SecimKutusu_1_sembol">
+                                <img src="images/legend.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel_3_1_gen2SecimKutusu_1_ozellikler">
+                        <div class="ozellikler_name_secim">
+                            <div class="ozellikler_name">
+                                TEST AVAXTARS
+                            </div>
+                        </div>
+                        <div class="ozellikler_level_xp">
+                            <div class="ozellikler_level">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                Level 75
+                            </div>
+                            <div class="ozellikler_xp">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                XP 28600
+                            </div>
+                        </div>
+                        <div class="ozellikler_dna">
+                            <div class="dna_hp">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>HP</p>
+                                <p>999</p>
+                            </div>
+                            <div class="dna_def">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>DEF</p>
+                                <p>999</p>
+                            </div>
+                            <div class="dna_atk">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>ATK</p>
+                                <p>999</p>
+                            </div>
+                            <div class="dna_speed">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>SPD</p>
+                                <p>999</p>
+                            </div>
+                        </div>
+                        <div class="ozellikler_rna">
+                            <div class="rna_detaylar">
+                                <div class="rna_genus">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    GENUS
+                                </div>
+                                <div class="rna_code">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    CODE
+                                </div>
+                                <div class="rna_talent">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    TALENT
+                                </div>
+                            </div>
+                            <div class="rna_sembol">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel_3_hepsiniSec">
+            <input type="checkbox" id="chbHepsiniSec_1">
+            <label for="chbHepsiniSec_1"> Select All </label>
+        </div>
+        <div class="panel_3_2">
+            <img src="images/aktarmaGorseli_sag_ok.webp" class="panel_3_2_aktarmaResmi">
+        </div>
+
+        <div class="panel_3_resimliCerceveGorunumu_sag">
+            <div class="panel_3_3" id="yeniListe">
+                <div class="panel_3_1_gen2SecimKutusu">
+                    <div class="panel_3_1_gen2SecimKutusu_1_resim_id_rarity_sembol">
+                        <div class="gen2SecimKutusu_1_resim">
+                            <img src="images/1.png">
+                        </div>
+                        <div class="gen2SecimKutusu_1_id">
+                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                            ID 123456
+                        </div>
+                        <div class="gen2SecimKutusu_1_rarity_sembol">
+                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                            <div class="gen2SecimKutusu_1_rarity">
+                                LEGEND
+                            </div>
+                            <div class="gen2SecimKutusu_1_sembol">
+                                <img src="images/legend.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel_3_1_gen2SecimKutusu_1_ozellikler">
+                        <div class="ozellikler_name_secim">
+                            <div class="ozellikler_name">
+                                TEST AVAXTARS
+                            </div>
+                        </div>
+                        <div class="ozellikler_level_xp">
+                            <div class="ozellikler_level">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                Level 75
+                            </div>
+                            <div class="ozellikler_xp">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                XP 28600
+                            </div>
+                        </div>
+                        <div class="ozellikler_dna">
+                            <div class="dna_hp">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>HP</p>
+                                <p>999</p>
+                            </div>
+                            <div class="dna_def">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>DEF</p>
+                                <p>999</p>
+                            </div>
+                            <div class="dna_atk">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>ATK</p>
+                                <p>999</p>
+                            </div>
+                            <div class="dna_speed">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <p>SPD</p>
+                                <p>999</p>
+                            </div>
+                        </div>
+                        <div class="ozellikler_rna">
+                            <div class="rna_detaylar">
+                                <div class="rna_genus">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    GENUS
+                                </div>
+                                <div class="rna_code">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    CODE
+                                </div>
+                                <div class="rna_talent">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    TALENT
+                                </div>
+                            </div>
+                            <div class="rna_sembol">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel_4">
+        <div class="panel_4_hepsiniSec">
+            <input type="checkbox" id="chbHepsiniSec_2">
+            <label for="chbHepsiniSec_2"> Select All </label>
+        </div>
+        <div class="panel_4_secilenlerinSonucu">
+            <p id="secilenlerinSayisiniGosterenEtiket"> Selected Objects = 0 </p>
+        </div>
+        <div class="panel_4_araBolme">
+
+        </div>
+        <div class="panel_4_toplamXp">
+            <p id="donuseceklerinToplamXpGosterenEtiket_1"> Recovered XP = 0 </p>
+        </div>
+        <div class="panel_4_donusumSonucu">
+            <p id="donuseceklerinSayisiniGosterenEtiket"> After Transformation = 0 </p>
+        </div>
+    </div>
+
+    <div class="panel_5">
+        <div class="panel_5_donusumSonucu">
+            <p id="donuseceklerinToplamXpGosterenEtiket_2"> Recovered XP = 0 </p>
+        </div>
+    </div>
+
+    <div class="panel_6">
+        <div class="panel_6_islemler">
+            <button class="flame_button">START</button>
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+</body>
+
+</html>

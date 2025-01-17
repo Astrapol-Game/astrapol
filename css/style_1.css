@@ -1,0 +1,2861 @@
+@import url(https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Aldrich&family=Roboto+Condensed:wght@300;400;700&display=swap);
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html
+{
+    /* bu html bloğu tüm sayfanın standart olarak içerisindeki özelliklerde olmasını sağlar
+    daha sonra her nesne için kendi css i içinde rem kullanarak buradaki değere göre kendini oranlar
+    örneğin h1 için font-size: 1.6rem gibi bir değer girersek 10 x 1.6 = 16px değerini vermiş oluruz*/
+    font-size: 10px;
+}
+
+body 
+{
+    font-family: Roboto Condensed,sans-serif;
+    color: #fff;
+    background-color: #212529;
+    background-size: cover; /* arka plan resmini yayar */
+}
+
+
+/* 
+  ##Cihaz = Masaüstü
+  ##Ekran = 1281px 'den yüksek çözünürlükler için
+*/
+
+@media (min-width: 1281px) 
+{
+    .mesajKutusu
+    {
+        /* border: solid 0.1px;
+        border-color: #2e80cd;
+        clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%); */
+        width: 500px;
+        height: 200px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Tam merkeze taşır */
+        z-index: 1000;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+
+        img
+        {
+            width: 100%;
+            height: 100%;
+            object-fit: fill; /* Görselin kutuya tam oturması */
+            position: absolute; /* Arka plana yerleştir */
+            top: 0;
+            left: 0;
+            z-index: -1; /* İçeriğin arkasında kalması için */
+        }
+
+        .mesajKutusuIcerigi
+        {
+            border: solid 0px;
+            width: 80%;
+            height: 60%;
+            font-size: 16px;
+            color: white;
+            margin-bottom: 10px;
+            padding: 10px 10px 10px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative; /* Üstte görünmesini sağla */
+            z-index: 1;
+        }
+
+        button
+        {
+            background-color: #eeeeee;
+            color: rgb(0, 0, 0);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+            position: relative; /* Üstte görünmesini sağla */
+            z-index: 1;
+        }
+    }
+
+    .menu-button 
+    {
+        position: fixed;
+        right: 20px;
+        top: 230px;
+        background-color: #007BFF;
+        color: white;
+        padding: 10px 15px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        z-index: 1000; /* Diğer elementlerin üstünde görünmesi için */
+    }
+    
+    .sidebar 
+    {
+        position: fixed;
+        top: 230px;
+        right: -650px; /* Menü başlangıçta gizli */
+        width: 650px;
+        height: 170px;
+        background-color: #333;
+        color: white;
+        transition: right 0.3s ease; /* Açılırken geçiş animasyonu */
+        z-index: 999; /* Menü, butondan arka planda kalacak */
+    
+        h2 
+        {
+            margin: 0;
+            padding: 10px;
+        }
+        
+        ul 
+        {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        ul li 
+        {
+            padding: 10px;
+            display: flex;
+            font-size: 1.8rem;
+
+            p
+            {
+                font-size: 1.8rem;
+            }
+
+            button
+            {
+                font-size: 1.5rem;
+                width: 80px;
+                height: 30px;
+            }
+        }
+        
+        ul li a 
+        {
+            color: white;
+            text-decoration: none;
+        }
+    }
+
+    .panel_1
+    {
+        border: solid 0px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+
+        .panel_1_1
+        {
+            border: solid 0px;
+            width: 100%;
+            height: 9.7rem;
+            background-image: url('../images/logo_astrapol.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .panel_1_2
+        {
+            border: solid 0px;
+            width: 100%;
+            font-family: Rajdhani,sans-serif;
+            font-style: normal;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: .013205em;
+            color: #fff;
+            text-shadow: 0 4px 4px rgba(0,0,0,.25);
+            margin-top: 45px;
+            font-size: 4rem;
+            line-height: 43px
+        }
+
+        .panel_1_3
+        {
+            border: solid 0px;
+            width: 100%;
+            text-align: center;
+            font-family: Rajdhani,sans-serif;
+            font-style: normal;
+            letter-spacing: .013205em;
+            color: #fff;
+            text-shadow: 0 4px 4px rgba(0,0,0,.25);
+            font-weight: 600;
+            font-size: 1.6rem;
+            line-height: 125.1%;
+        }
+    }
+
+    .panel_2
+    {
+        border: solid 0px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        height: 45px;
+        display: flex;
+        justify-content: row;
+
+        .panel_2_nesneSecimi
+        {
+            border: solid 0.1px;
+            border-color: #2e80cd;
+            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            .nesneSecimi_1
+            {
+                border: solid 0px;
+                width: 180px;
+                height: 100%;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                padding-right: 10px;
+            }
+
+            .nesneSecimi_1 p
+            {
+                font-size: 1.6rem;
+            }
+
+            .nesneSecimi_2
+            {
+                border: solid 0px;
+                width: 180px;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-right: 10px;
+            }
+
+            .nesneSecimi_2 select 
+            {
+                font-size: 18px;
+                width: 100%;
+            }
+        }
+
+        .panel_2_nadirlikSecimi
+        {
+            border: solid 0.1px;
+            border-color: #2e80cd;
+            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            .nadirlikSecimi_1
+            {
+                border: solid 0px;
+                width: 180px;
+                height: 100%;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                padding-right: 10px;
+            }
+
+            .nadirlikSecimi_1 p
+            {
+                font-size: 1.6rem;
+            }
+
+            .nadirlikSecimi_2
+            {
+                border: solid 0px;
+                width: 180px;
+                height: 100%;
+                margin-top: 5px;
+                margin-left: 5px;
+                margin-right: 5px;
+                margin-bottom: 5px;
+                align-items: center;
+                padding-top: 8px;
+            }
+
+            .nadirlikSecimi_2 select 
+            {
+                font-size: 18px;
+                width: 100%;
+            }
+        }
+
+        .panel_2_islemler
+        {
+            border: solid 0.1px;
+            border-color: #2e80cd;
+            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            width: 150px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+
+            .panel_2_islemler_button
+            {
+                transition-duration: 0.4s;
+                width: 100px;
+                font-size: 1.6rem;
+            }
+
+            .panel_2_islemler_button:hover 
+            {
+                background-color: #767882;
+                color: white;
+            }
+        }
+    }
+
+    .panel_3
+    {
+        border: solid 0px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-top: 10px;
+        height: 100%;
+        display: flex;
+        gap: 10px;
+        padding-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+
+        .panel_3_hepsiniSec
+        {
+            display: none;
+        }
+
+        .panel_3_resimliCerceveGorunumu_sol
+        {
+            border: solid 0px;
+            height: 480px;
+            width: 47.5%;
+            background-image: url(../images/list_left.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center; /* Çerçeve merkezlenir */
+            padding-top: 10px;
+            padding-left: 18px;
+            padding-right: 18px;
+            padding-bottom: 10px;
+
+            .panel_3_1
+            {
+                border: solid 0px;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                gap: 5px;
+                flex-wrap: wrap;
+                align-content: flex-start;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-top: 1px;
+                padding-left: 1px;
+                padding-right: 1px;
+                padding-bottom: 1px;
+                position: relative;
+
+                .panel_3_1_gen2SecimKutusu
+                {
+                    border: solid 0px;
+                    height: 150px;
+                    width: 400px;
+                    display: flex;
+                    justify-content: row;
+                    gap: 2px;
+                    padding-top: 1px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                    padding-bottom: 1px;
+                    margin-bottom: 10px;
+
+                    .panel_3_1_gen2SecimKutusu_1_resim_id_rarity_sembol
+                    {
+                        border: solid 0px;
+                        width: 20%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+
+                        .gen2SecimKutusu_1_resim
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 60%;
+                            background-image: url(../images/avaxtar-photo.png);
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            background-position: center; /* Çerçeve merkezlenir */
+                            position: relative; /* Profil resmini konumlandırmak için */
+                            display: flex;
+                            justify-content: center; /* Profil resmini ortalar */
+                            align-items: center; /* Profil resmini dikeyde ortalar */
+                            overflow: hidden; /* Profil resminin çerçeveden taşmamasını sağlar */
+                        }
+
+                        .gen2SecimKutusu_1_resim img
+                        {
+                            width: 80%;
+                            height: auto;
+                            position: absolute;
+                        }
+
+                        .gen2SecimKutusu_1_resim input
+                        {
+                            position: absolute;
+                            bottom: 12px;
+                            right: 7px;
+                        }
+
+                        .gen2SecimKutusu_1_id
+                        {
+                            border: solid 0.1px;
+                            border-color: #2e80cd;
+                            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                            width: 100%;
+                            height: 10%;
+                            display: flex;
+                            justify-content: flex-start;
+                            padding-left: 2px;
+
+                            .gen2YatayDetayArkaPlanResmi
+                            {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                z-index: -1;
+                                opacity: 0.4;
+                            }
+                        }
+
+                        .gen2SecimKutusu_1_rarity_sembol
+                        {
+                            border: solid 0.1px;
+                            border-color: #2e80cd;
+                            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                            width: 100%;
+                            height: 30%;
+                            display: flex;
+
+                            .gen2YatayDetayArkaPlanResmi
+                            {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                z-index: -1;
+                                opacity: 0.4;
+                            }
+
+                            .gen2SecimKutusu_1_rarity
+                            {
+                                border: solid 0px;
+                                width: 70%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                padding-left: 2px;
+                            }
+
+                            .gen2SecimKutusu_1_sembol
+                            {
+                                border: solid 0px;
+                                width: 30%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .gen2SecimKutusu_1_sembol img
+                            {
+                                width: 75%;
+                                height: 75%;
+                                object-fit: contain;
+                            }
+                        }
+                    }
+        
+                    .panel_3_1_gen2SecimKutusu_1_ozellikler
+                    {
+                        border: solid 0px;
+                        width: 70%;
+                        height: 100%;
+
+                        .ozellikler_name_secim
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 15%;
+                            display: flex;
+                            justify-content: row;
+
+                            .ozellikler_name
+                            {
+                                border: solid 0px;
+                                width: 80%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+                            }
+                        }
+
+                        .ozellikler_level_xp
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 15%;
+                            display: flex;
+
+                            .ozellikler_level
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 50%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .ozellikler_xp
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 50%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+
+                        .ozellikler_dna
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 30%;
+                            display: flex;
+
+                            .dna_hp
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_def
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_atk
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_speed
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+
+                        .ozellikler_rna
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 40%;
+                            display: flex;
+
+                            .rna_detaylar
+                            {
+                                border: solid 0px;
+                                width: 75%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+
+                                .rna_genus
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+
+                                .rna_code
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+
+                                .rna_talent
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+                            }
+
+                            .rna_sembol
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .panel_3_2
+        {
+            height: 480px;
+            width: 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .panel_3_2_aktarmaResmi
+            {
+                width: 100%; /* İkon genişliği */
+                height: auto;
+                animation: glow 2s infinite ease-in-out; /* Parlama animasyonu */
+            }
+        }
+
+        .panel_3_resimliCerceveGorunumu_sag
+        {
+            border: solid 0px;
+            height: 480px;
+            width: 47.5%;
+            background-image: url(../images/list_right.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center; /* Çerçeve merkezlenir */
+            padding-top: 10px;
+            padding-left: 18px;
+            padding-right: 18px;
+            padding-bottom: 10px;
+
+            .panel_3_3
+            {
+                border: solid 0px;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                gap: 5px;
+                flex-wrap: wrap;
+                align-content: flex-start;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-top: 1px;
+                padding-left: 1px;
+                padding-right: 1px;
+                padding-bottom: 1px;
+                position: relative;
+
+                .panel_3_1_gen2SecimKutusu
+                {
+                    border: solid 0px;
+                    height: 150px;
+                    width: 400px;
+                    display: flex;
+                    justify-content: row;
+                    gap: 2px;
+                    padding-top: 1px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                    padding-bottom: 1px;
+                    margin-bottom: 10px;
+
+                    .panel_3_1_gen2SecimKutusu_1_resim_id_rarity_sembol
+                    {
+                        border: solid 0px;
+                        width: 20%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+
+                        .gen2SecimKutusu_1_resim
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 60%;
+                            background-image: url(../images/avaxtar-photo.png);
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            background-position: center; /* Çerçeve merkezlenir */
+                            position: relative; /* Profil resmini konumlandırmak için */
+                            display: flex;
+                            justify-content: center; /* Profil resmini ortalar */
+                            align-items: center; /* Profil resmini dikeyde ortalar */
+                            overflow: hidden; /* Profil resminin çerçeveden taşmamasını sağlar */
+                        }
+
+                        .gen2SecimKutusu_1_resim img
+                        {
+                            width: 80%;
+                            height: auto;
+                            position: absolute;
+                        }
+
+                        .gen2SecimKutusu_1_resim input
+                        {
+                            position: absolute;
+                            bottom: 12px;
+                            right: 7px;
+                        }
+
+                        .gen2SecimKutusu_1_id
+                        {
+                            border: solid 0.1px;
+                            border-color: #2e80cd;
+                            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                            width: 100%;
+                            height: 10%;
+                            display: flex;
+                            justify-content: flex-start;
+                            padding-left: 2px;
+
+                            .gen2YatayDetayArkaPlanResmi
+                            {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                z-index: -1;
+                                opacity: 0.4;
+                            }
+                        }
+
+                        .gen2SecimKutusu_1_rarity_sembol
+                        {
+                            border: solid 0.1px;
+                            border-color: #2e80cd;
+                            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                            width: 100%;
+                            height: 30%;
+                            display: flex;
+
+                            .gen2YatayDetayArkaPlanResmi
+                            {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                z-index: -1;
+                                opacity: 0.4;
+                            }
+
+                            .gen2SecimKutusu_1_rarity
+                            {
+                                border: solid 0px;
+                                width: 70%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                padding-left: 2px;
+                            }
+
+                            .gen2SecimKutusu_1_sembol
+                            {
+                                border: solid 0px;
+                                width: 30%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .gen2SecimKutusu_1_sembol img
+                            {
+                                width: 75%;
+                                height: 75%;
+                                object-fit: contain;
+                            }
+                        }
+                    }
+        
+                    .panel_3_1_gen2SecimKutusu_1_ozellikler
+                    {
+                        border: solid 0px;
+                        width: 70%;
+                        height: 100%;
+
+                        .ozellikler_name_secim
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 15%;
+                            display: flex;
+                            justify-content: row;
+
+                            .ozellikler_name
+                            {
+                                border: solid 0px;
+                                width: 80%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+                            }
+                        }
+
+                        .ozellikler_level_xp
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 15%;
+                            display: flex;
+
+                            .ozellikler_level
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 50%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .ozellikler_xp
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 50%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+
+                        .ozellikler_dna
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 30%;
+                            display: flex;
+
+                            .dna_hp
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_def
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_atk
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_speed
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+
+                        .ozellikler_rna
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 40%;
+                            display: flex;
+
+                            .rna_detaylar
+                            {
+                                border: solid 0px;
+                                width: 75%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+
+                                .rna_genus
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+
+                                .rna_code
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+
+                                .rna_talent
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+                            }
+
+                            .rna_sembol
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }        
+    }
+
+    .panel_4
+    {
+        border: solid 0px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        height: 45px;
+        display: flex;
+        padding-top: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+
+        .panel_4_hepsiniSec
+        {
+            border: solid 0px;
+            width: 17%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 5px;
+            padding-left: 30px;
+            font-size: 1.8rem;
+
+            .panel_4_hepsiniSec_input
+            {
+                width: 19px;
+                height: 19px;
+            }
+        }
+
+        .panel_4_secilenlerinSonucu
+        {
+            border: solid 0px;
+            width: 30.5%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 30px;
+            font-size: 1.8rem;
+        }
+
+        .panel_4_araBolme
+        {
+            border: solid 0px;
+            width: 5%;
+        }
+
+        .panel_4_toplamXp
+        {
+            border: solid 0px;
+            width: 30%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 30px;
+            font-size: 1.8rem;
+        }
+
+        .panel_4_donusumSonucu
+        {
+            border: solid 0px;
+            width: 17.5%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 30px;
+            font-size: 1.8rem;
+        }
+    }
+
+    .panel_5
+    {
+        display: none;
+    }
+
+    .panel_6
+    {
+        border: solid 0px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .panel_6_islemler
+        {
+            border: solid 0px;
+            width: 150px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+
+            .flame_button
+            {
+                position: relative;
+                padding: 10px 25px;
+                font-size: 1.5rem;
+                color: white;
+                background: transparent;
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                cursor: pointer;
+                overflow: hidden;
+                z-index: 1;
+                transition: color 0.3s ease;
+                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            }
+
+            .flame_button:hover 
+            {
+                color: #ffb400;
+                text-shadow: 0 0 10px rgba(255, 180, 0, 0.8), 0 0 20px rgba(255, 160, 0, 0.6);
+            }
+
+            .flame_button::before 
+            {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(45deg, rgba(255,69,0,0.7), rgba(255,140,0,0.8), rgba(255,215,0,0.7));
+                background-size: 200% 200%;
+                z-index: -1;
+                filter: blur(8px);
+                transition: background-color 0.3s ease;
+            }
+
+            .flame_button:hover::before 
+            {
+                background: linear-gradient(45deg, rgba(255,69,0,0.9), rgba(255,140,0,0.9), rgba(255,215,0,0.9), rgba(255,99,71,0.9));
+            }
+        }
+    }
+}
+  
+  /* 
+    ##Cihaz = Laptoplar, Masaüstü
+    ##Ekran = 1025px to 1280px Arası Ekranlar
+  */
+  
+@media (min-width: 1025px) and (max-width: 1280px) 
+{
+
+}
+  
+  /* 
+    ##Cihaz = Tabletler, Ipad (portrait/dikey modda)
+    ##Ekran = 768px to 1024px Arası Ekranlar
+  */
+  
+@media (min-width: 768px) and (max-width: 1024px) 
+{
+
+}
+  
+  /* 
+    ##Cihaz = Tabletler, Ipad (landscape/yatay modda)
+    ##Ekran = 768px to 1024px Arası Ekranlar
+  */
+  
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) 
+{
+
+}
+  
+  /* 
+    ##Cihaz = Düşük Çözünürlüklü Tablet ve Mobil Ekranlar (Landscape / Yatay Modda)
+    ##Ekran = 481px to 767px Arası Ekranlar
+  */
+  
+@media (min-width: 481px) and (max-width: 767px) 
+{
+
+}
+  
+  /* 
+    ##Cihaz = En Çok Tercih Edilen Mobil Boyutlar (Portrait/Dikey Modda)
+    ##Ekran = 320px to 479px Arası Ekranlar
+  */
+  
+@media (min-width: 320px) and (max-width: 480px) 
+{
+    .mesajKutusu
+    {
+        /* border: solid 0.1px;
+        border-color: #2e80cd;
+        clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%); */
+        width: 300px;
+        height: 250px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Tam merkeze taşır */
+        z-index: 1000;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+
+        img
+        {
+            width: 100%;
+            height: 100%;
+            object-fit: fill; /* Görselin kutuya tam oturması */
+            position: absolute; /* Arka plana yerleştir */
+            top: 0;
+            left: 0;
+            z-index: -1; /* İçeriğin arkasında kalması için */
+        }
+
+        .mesajKutusuIcerigi
+        {
+            border: solid 0px;
+            width: 80%;
+            height: 60%;
+            font-size: 16px;
+            color: white;
+            margin-bottom: 10px;
+            padding: 10px 10px 10px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative; /* Üstte görünmesini sağla */
+            z-index: 1;
+        }
+
+        button
+        {
+            background-color: #eeeeee;
+            color: rgb(0, 0, 0);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+            position: relative; /* Üstte görünmesini sağla */
+            z-index: 1;
+        }
+    }
+
+    .menu-button 
+    {
+        position: fixed;
+        left: 20px;
+        top: 100px;
+        background-color: #007BFF;
+        color: white;
+        padding: 10px 15px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        z-index: 1000; /* Diğer elementlerin üstünde görünmesi için */
+    }
+    
+    .sidebar 
+    {
+        position: fixed;
+        top: 100px;
+        left: -400px; /* Menü başlangıçta gizli */
+        width: 400px;
+        height: 180px;
+        background-color: #333;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        transition: left 0.3s ease; /* Açılırken geçiş animasyonu */
+        z-index: 999; /* Menü, butondan arka planda kalacak */
+    
+        h2 
+        {
+            margin: 0;
+            padding: 10px;
+            align-self: flex-end;
+        }
+        
+        ul 
+        {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        ul li 
+        {
+            padding: 10px;
+            display: flex;
+            justify-content: flex-start; /* li içerikleri sola yaslanacak */
+            font-size: 1.5rem;
+
+            p
+            {
+                font-size: 1.5rem;
+            }
+
+            button
+            {
+                font-size: 1.5rem;
+                width: 80px;
+                height: 30px;
+            }
+        }
+        
+        ul li a 
+        {
+            color: white;
+            text-decoration: none;
+        }
+    }
+
+    .panel_1
+    {
+        border: solid 0px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+
+        .panel_1_1
+        {
+            border: solid 0px;
+            width: 100%;
+            height: 9.7rem;
+            background-image: url('../images/logo_astrapol.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .panel_1_2
+        {
+            border: solid 0px;
+            width: 100%;
+            font-family: Rajdhani,sans-serif;
+            font-style: normal;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: .013205em;
+            color: #fff;
+            text-shadow: 0 4px 4px rgba(0,0,0,.25);
+            margin-top: 45px;
+            font-size: 4rem;
+            line-height: 43px
+        }
+
+        .panel_1_3
+        {
+            border: solid 0px;
+            width: 100%;
+            text-align: center;
+            font-family: Rajdhani,sans-serif;
+            font-style: normal;
+            letter-spacing: .013205em;
+            color: #fff;
+            text-shadow: 0 4px 4px rgba(0,0,0,.25);
+            font-weight: 600;
+            font-size: 1.6rem;
+            line-height: 125.1%;
+        }
+    }
+
+    .panel_2
+    {
+        border: solid 0px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+
+        .panel_2_nesneSecimi
+        {
+            border: solid 0.1px;
+            border-color: #2e80cd;
+            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            .nesneSecimi_1
+            {
+                border: solid 0px;
+                width: 180px;
+                height: 100%;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                padding-right: 5px;
+            }
+
+            .nesneSecimi_1 p
+            {
+                font-size: 1.75rem;
+            }
+
+            .nesneSecimi_2
+            {
+                border: solid 0px;
+                width: 180px;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-right: 5px;
+            }
+
+            .nesneSecimi_2 select 
+            {
+                font-size: 1.6rem;
+                width: 100%;
+            }
+        }
+
+        .panel_2_nadirlikSecimi
+        {
+            border: solid 0.1px;
+            border-color: #2e80cd;
+            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            .nadirlikSecimi_1
+            {
+                border: solid 0px;
+                width: 180px;
+                height: 100%;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                padding-right: 5px;
+            }
+
+            .nadirlikSecimi_1 p
+            {
+                font-size: 1.75rem;
+            }
+
+            .nadirlikSecimi_2
+            {
+                border: solid 0px;
+                width: 180px;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-right: 5px;
+            }
+
+            .nadirlikSecimi_2 select 
+            {
+                font-size: 1.6rem;
+                width: 100%;
+            }
+        } 
+
+        .panel_2_islemler
+        {
+            border: solid 0.1px;
+            border-color: #2e80cd;
+            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            width: 150px;
+            height: 100%;
+            margin-left: auto;
+            display: flex;
+            justify-content: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+
+            .panel_2_islemler_button
+            {
+                transition-duration: 0.4s;
+                width: 100px;
+                font-size: 1.6rem;
+            }
+
+            .panel_2_islemler_button:hover 
+            {
+                background-color: #767882;
+                color: white;
+            }
+        }
+    }
+
+    .panel_3
+    {
+        border: solid 0px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-top: 10px;
+        height: 100%;
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        padding-top: 1px;
+        padding-left: 1px;
+        padding-right: 1px;
+        padding-bottom: 1px;
+
+        .panel_3_hepsiniSec
+        {
+            border: solid 0px;
+            height: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 5px;
+            padding-right: 30px;
+            font-size: 1.5rem;
+
+            .panel_3_hepsiniSec_input
+            {
+                width: 15px;
+                height: 15px;
+            }
+        }
+
+        .panel_3_resimliCerceveGorunumu_sol
+        {
+            border: solid 0px;
+            height: 250px;
+            width: 100%;
+            background-image: url(../images/list_left.png);
+            background-size: 95% 95%;
+            background-repeat: no-repeat;
+            background-position: center; /* Çerçeve merkezlenir */
+            padding-top: 12px;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-bottom: 10px;
+
+            .panel_3_1 /* filtreye göre çekilen veriler, kutular halinde bu div içerisine yerleştirilir */
+            {
+                border: solid 0px;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                gap: 5px;
+                flex-wrap: wrap;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-top: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-bottom: 10px;
+                position: relative;
+
+                .panel_3_1_gen2SecimKutusu /* item özellikleri ana kutu */
+                {
+                    border: solid 0px;
+                    height: 150px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: row;
+                    gap: 2px;
+                    padding-top: 1px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                    padding-bottom: 1px;
+                    margin-bottom: 20px;
+
+                    .panel_3_1_gen2SecimKutusu_1_resim_id_rarity_sembol
+                    {
+                        border: solid 0px;
+                        width: 25%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+
+                        .gen2SecimKutusu_1_resim
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 60%;
+                            background-image: url(../images/avaxtar-photo.png);
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            background-position: center; /* Çerçeve merkezlenir */
+                            position: relative;
+                            display: flex;
+                            justify-content: center; /* Profil resmini ortalar */
+                            align-items: center; /* Profil resmini dikeyde ortalar */
+                            padding-left: 2px;
+                            padding-top: 4px;
+                        }
+
+                        .gen2SecimKutusu_1_resim img
+                        {
+                            width: 75%;
+                            height: auto;
+                        }
+
+                        .gen2SecimKutusu_1_resim input
+                        {
+                            position: absolute;
+                            bottom: 7px;
+                            right: 10px;
+                        }
+
+                        .gen2SecimKutusu_1_id
+                        {
+                            border: solid 0.1px;
+                            border-color: #2e80cd;
+                            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                            width: 100%;
+                            height: 10%;
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+
+                            .gen2YatayDetayArkaPlanResmi
+                            {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                z-index: -1;
+                                opacity: 0.4;
+                            }
+                        }
+
+                        .gen2SecimKutusu_1_rarity_sembol
+                        {
+                            border: solid 0.1px;
+                            border-color: #2e80cd;
+                            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                            width: 100%;
+                            height: 30%;
+                            display: flex;
+
+                            .gen2YatayDetayArkaPlanResmi
+                            {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                z-index: -1;
+                                opacity: 0.4;
+                            }
+
+                            .gen2SecimKutusu_1_rarity
+                            {
+                                border: solid 0px;
+                                width: 70%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .gen2SecimKutusu_1_sembol
+                            {
+                                border: solid 0px;
+                                width: 30%;
+                                height: 100%;
+                            }
+
+                            .gen2SecimKutusu_1_sembol img
+                            {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: contain;
+                            }
+                        }
+                    }
+        
+                    .panel_3_1_gen2SecimKutusu_1_ozellikler
+                    {
+                        border: solid 0px;
+                        width: 75%;
+                        height: 100%;
+
+                        .ozellikler_name_secim
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 15%;
+                            display: flex;
+                            justify-content: row;
+
+                            .ozellikler_name
+                            {
+                                border: solid 0px;
+                                width: 80%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+                            }
+                        }
+
+                        .ozellikler_level_xp
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 15%;
+                            display: flex;
+
+                            .ozellikler_level
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 50%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .ozellikler_xp
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 50%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+
+                        .ozellikler_dna
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 30%;
+                            display: flex;
+
+                            .dna_hp
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_def
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_atk
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_speed
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+
+                        .ozellikler_rna
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 40%;
+                            display: flex;
+
+                            .rna_detaylar
+                            {
+                                border: solid 0px;
+                                width: 75%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+
+                                .rna_genus
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+
+                                .rna_code
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+
+                                .rna_talent
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+                            }
+
+                            .rna_sembol
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .panel_3_1 p
+                {
+                    color: white;
+                }
+            }
+        }
+        
+        .panel_3_2
+        {
+            border: solid 0px;
+            height: 110px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .panel_3_2_aktarmaResmi
+            {
+                width: 20%; /* İkon genişliği */
+                height: auto;
+                animation: glow 2s infinite ease-in-out; /* Parlama animasyonu */
+                rotate: 90deg;
+            }
+        }
+
+        .panel_3_resimliCerceveGorunumu_sag
+        {
+            border: solid 0px;
+            height: 250px;
+            width: 100%;
+            background-image: url(../images/list_left.png);
+            background-size: 95% 95%;
+            background-repeat: no-repeat;
+            background-position: center; /* Çerçeve merkezlenir */
+            padding-top: 12px;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-bottom: 10px;
+
+            .panel_3_3
+            {
+                border: solid 0px;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                gap: 5px;
+                flex-wrap: wrap;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-top: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-bottom: 10px;
+                position: relative;
+
+                .panel_3_1_gen2SecimKutusu /* item özellikleri ana kutu */
+                {
+                    border: solid 0px;
+                    height: 150px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: row;
+                    gap: 2px;
+                    padding-top: 1px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                    padding-bottom: 1px;
+                    margin-bottom: 20px;
+
+                    .panel_3_1_gen2SecimKutusu_1_resim_id_rarity_sembol
+                    {
+                        border: solid 0px;
+                        width: 25%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+
+                        .gen2SecimKutusu_1_resim
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 60%;
+                            background-image: url(../images/avaxtar-photo.png);
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            background-position: center; /* Çerçeve merkezlenir */
+                            position: relative;
+                            display: flex;
+                            justify-content: center; /* Profil resmini ortalar */
+                            align-items: center; /* Profil resmini dikeyde ortalar */
+                            padding-left: 2px;
+                            padding-top: 4px;
+                        }
+
+                        .gen2SecimKutusu_1_resim img
+                        {
+                            width: 75%;
+                            height: auto;
+                        }
+
+                        .gen2SecimKutusu_1_resim input
+                        {
+                            position: absolute;
+                            bottom: 7px;
+                            right: 10px;
+                        }
+
+                        .gen2SecimKutusu_1_id
+                        {
+                            border: solid 0.1px;
+                            border-color: #2e80cd;
+                            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                            width: 100%;
+                            height: 10%;
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+                            padding-left: 2px;
+
+                            .gen2YatayDetayArkaPlanResmi
+                            {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                z-index: -1;
+                                opacity: 0.4;
+                            }
+                        }
+
+                        .gen2SecimKutusu_1_rarity_sembol
+                        {
+                            border: solid 0.1px;
+                            border-color: #2e80cd;
+                            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                            width: 100%;
+                            height: 30%;
+                            display: flex;
+
+                            .gen2YatayDetayArkaPlanResmi
+                            {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                z-index: -1;
+                                opacity: 0.4;
+                            }
+
+                            .gen2SecimKutusu_1_rarity
+                            {
+                                border: solid 0px;
+                                width: 70%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .gen2SecimKutusu_1_sembol
+                            {
+                                border: solid 0px;
+                                width: 30%;
+                                height: 100%;
+                            }
+
+                            .gen2SecimKutusu_1_sembol img
+                            {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: contain;
+                            }
+                        }
+                    }
+        
+                    .panel_3_1_gen2SecimKutusu_1_ozellikler
+                    {
+                        border: solid 0px;
+                        width: 75%;
+                        height: 100%;
+
+                        .ozellikler_name_secim
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 15%;
+                            display: flex;
+                            justify-content: row;
+
+                            .ozellikler_name
+                            {
+                                border: solid 0px;
+                                width: 80%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+                            }
+                        }
+
+                        .ozellikler_level_xp
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 15%;
+                            display: flex;
+
+                            .ozellikler_level
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 50%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .ozellikler_xp
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 50%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-left: 2px;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+
+                        .ozellikler_dna
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 30%;
+                            display: flex;
+
+                            .dna_hp
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_def
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_atk
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+
+                            .dna_speed
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+
+                        .ozellikler_rna
+                        {
+                            border: solid 0px;
+                            width: 100%;
+                            height: 40%;
+                            display: flex;
+
+                            .rna_detaylar
+                            {
+                                border: solid 0px;
+                                width: 75%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: column;
+
+                                .rna_genus
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+
+                                .rna_code
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+
+                                .rna_talent
+                                {
+                                    border: solid 0.1px;
+                                    border-color: #2e80cd;
+                                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left: 2px;
+
+                                    .gen2YatayDetayArkaPlanResmi
+                                    {
+                                        position: absolute;
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        z-index: -1;
+                                        opacity: 0.4;
+                                    }
+                                }
+                            }
+
+                            .rna_sembol
+                            {
+                                border: solid 0.1px;
+                                border-color: #2e80cd;
+                                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                                width: 25%;
+                                height: 100%;
+
+                                .gen2YatayDetayArkaPlanResmi
+                                {
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: -1;
+                                    opacity: 0.4;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .panel_4
+    {
+        border: solid 0px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        height: 45px;
+        display: flex;
+        padding-top: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+
+        .panel_4_hepsiniSec
+        {
+            display: none;
+        }
+
+        .panel_4_secilenlerinSonucu
+        {
+            border: solid 0px;
+            width: 47.5%;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(3, 66, 142, 0.5);
+            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            font-size: 1.5rem;
+        }
+
+        .panel_4_araBolme
+        {
+            border: solid 0px;
+            width: 5%;
+        }
+
+        .panel_4_toplamXp
+        {
+            display: none;
+        }
+
+        .panel_4_donusumSonucu
+        {
+            border: solid 0px;
+            width: 47.5%;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            background: rgba(3, 66, 142, 0.5);
+            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            font-size: 1.5rem;
+        }
+    }
+
+    .panel_5
+    {
+        border: solid 0px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        height: 45px;
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+
+        .panel_5_donusumSonucu
+        {
+            border: solid 0px;
+            width: 47.5%;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            background: rgba(3, 66, 142, 0.5);
+            clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            font-size: 1.5rem;
+        }
+    }
+
+    .panel_6
+    {
+        border: solid 0px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .panel_6_islemler
+        {
+            border: solid 0px;
+            width: 150px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+
+            .flame_button
+            {
+                position: relative;
+                padding: 10px 25px;
+                font-size: 1.5rem;
+                color: white;
+                background: transparent;
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                cursor: pointer;
+                overflow: hidden;
+                z-index: 1;
+                transition: color 0.3s ease;
+                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+            }
+
+            .flame_button:hover 
+            {
+                color: #ffb400;
+                text-shadow: 0 0 10px rgba(255, 180, 0, 0.8), 0 0 20px rgba(255, 160, 0, 0.6);
+            }
+
+            .flame_button::before 
+            {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(45deg, rgba(255,69,0,0.7), rgba(255,140,0,0.8), rgba(255,215,0,0.7));
+                background-size: 200% 200%;
+                z-index: -1;
+                filter: blur(8px);
+                animation: flameAnimation 3s infinite;
+                transition: background-color 0.3s ease;
+            }
+
+            .flame_button:hover::before 
+            {
+                background: linear-gradient(45deg, rgba(255,69,0,0.9), rgba(255,140,0,0.9), rgba(255,215,0,0.9), rgba(255,99,71,0.9));
+            }
+        }
+    }
+}
+
+@keyframes glow 
+{
+    0% {
+        filter: brightness(1); /* Normal parlaklık */
+    }
+    50% {
+        filter: brightness(1.5); /* Yüksek parlaklık */
+    }
+    100% {
+        filter: brightness(1); /* Geri normale döner */
+    }
+}
+
+@keyframes flameAnimation 
+{
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
