@@ -1,9 +1,0 @@
-Fonksiyon	Selector
-transferOwnership(address)	f2fde38b
-ownerOf(uint256)	6352211e
-balanceOf(address)	70a08231
-setMintFee(uint256)	a41c4af9
-mint(address,uint256,string,uint256)	1249c58b
-tokenURI(uint256)	c87b56dd
-getLevel(uint256)	c0c53fea
-transferFrom(address,address,uint256)	23b872dd

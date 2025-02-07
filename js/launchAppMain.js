@@ -2,8 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', async () =>
 {
-    const { keccak256 } = await import('https://cdn.jsdelivr.net/npm/js-sha3@0.8.0/build/sha3.min.js');
-
     document.getElementById('btnMesajKutusunuKapat').addEventListener('click', () =>
     {
         document.getElementById("divMesajKutusu").style.display = "none";
@@ -38,11 +36,6 @@ document.addEventListener('DOMContentLoaded', async () =>
     
             sidebar.style.left = '';
         }
-    });
-
-    document.getElementById('btnDakListeMenusunuKapat').addEventListener('click', () =>
-    {
-        document.getElementById("divDakListesiMenusu").style.display = "none";
     });
 
     document.getElementById('btn_cuzdanBagliMiBagla').addEventListener('click', () =>
@@ -94,6 +87,23 @@ document.addEventListener('DOMContentLoaded', async () =>
     // {
     //     listeyiDoldurTest();
     // });
+
+    if (window.ethereum && window.ethereum.isMetaMask) 
+    {
+        window.ethereum.on("accountsChanged", () => window.location.reload());
+        setInterval(() => 
+        {
+            if (!window.ethereum.listenerCount || !window.ethereum._events || !window.ethereum._events.accountsChanged) 
+            {
+                console.warn("Event listener kaldırılmış, tekrar ekleniyor...");
+                window.ethereum.on("accountsChanged", () => window.location.reload());
+            }
+        }, 3000);
+    } 
+    else 
+    {
+        console.warn("MetaMask yüklü değil!");
+    }
 });
 
 function sayiFormatlama(sayi, islem) 
@@ -197,12 +207,19 @@ async function connectWallet()
             let cuzdanAdresleri = await ethereum.request({ method:'eth_accounts'});
             if(cuzdanAdresleri.length === 0)
             {
-                cuzdanAdresleri = await ethereum.request({method: 'eth_requestAccounts'});   
+                cuzdanAdresleri = await ethereum.request({method: 'eth_requestAccounts'});
             }
 
             const seciliCuzdanAdresi = cuzdanAdresleri[0];
             const chainId = await ethereum.request({ method: 'eth_chainId' });
             const userAgent = navigator.userAgent;
+
+            if (!sessionStorage.getItem("session_id")) 
+            {
+                sessionStorage.setItem("session_id", Math.random().toString(36).substring(2, 11));
+            }            
+
+            const sessionId = sessionStorage.getItem("session_id");
 
             const baglantiDurumu = await fetch('/app/baglantiOlustur.php', 
             {
@@ -213,7 +230,8 @@ async function connectWallet()
                 {
                     seciliCuzdanAdresi, 
                     chainId,
-                    userAgent
+                    userAgent,
+                    sessionId
                 })
             });
 
@@ -228,11 +246,14 @@ async function connectWallet()
             const baglantiDurumuSonucu = await baglantiDurumu.json();
             if (baglantiDurumuSonucu.mesajKodu === "6")
             {
-                const imzaMesaji = "Please sign this message to verify your wallet.";
+                const onayliChainId = baglantiDurumuSonucu.chain;
+                const onayliCuzdanAdresi = baglantiDurumuSonucu.userWallet;
+                const onayliImzaMesaji = baglantiDurumuSonucu.signMessage;
+
                 const imza = await ethereum.request(
                 {
                     method: 'personal_sign',
-                    params: [imzaMesaji, seciliCuzdanAdresi],
+                    params: [onayliImzaMesaji, onayliCuzdanAdresi],
                 });
 
                 const baglantiOnayla = await fetch('/app/baglantiOnayla.php', 
@@ -242,10 +263,10 @@ async function connectWallet()
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(
                     {
-                        seciliCuzdanAdresi, 
-                        chainId,
+                        onayliCuzdanAdresi, 
+                        onayliChainId,
                         userAgent,
-                        imzaMesaji,
+                        onayliImzaMesaji,
                         imza
                     })
                 });
@@ -259,9 +280,9 @@ async function connectWallet()
                 }
 
                 const baglantiOnaylaSonucu = await baglantiOnayla.json();
-                if(baglantiOnaylaSonucu.mesajKodu === "5")
+                if(baglantiOnaylaSonucu.mesajKodu === "5" || baglantiOnaylaSonucu.mesajKodu === "32")
                 {
-                    document.getElementById("p_cuzdanAdresi").innerText = seciliCuzdanAdresi;
+                    document.getElementById("p_cuzdanAdresi").innerText = baglantiOnaylaSonucu.userWallet;
                     document.getElementById("p_ag").innerText = baglantiOnaylaSonucu.chain;
                     return true;
                 }
@@ -274,7 +295,7 @@ async function connectWallet()
             }
             else if(baglantiDurumuSonucu.mesajKodu === "14")
             {
-                document.getElementById("p_cuzdanAdresi").innerText = seciliCuzdanAdresi;
+                document.getElementById("p_cuzdanAdresi").innerText = baglantiDurumuSonucu.userWallet;
                 document.getElementById("p_ag").innerText = baglantiDurumuSonucu.chain;
                 return true;
             }
@@ -327,6 +348,7 @@ async function dakMenusunuOlustur()
     try 
     {
         document.getElementById('btnDakMenusu').disabled = true;
+        document.getElementById("panel_3_2").innerHTML = "";
 
         const cuzdanBagliMi = await connectWallet();
         if(cuzdanBagliMi == true)
@@ -385,6 +407,12 @@ async function dakMenusunuOlustur()
                             <div class="dakDetaylari">
                                 <div class="dakDetaylariSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                                    <p>ID =</p>
+                                    <p id="dak_idDegeri">${sonDakBilgisiYaniti.dbDakListesi[0].id}</p>
+                                </div>
+
+                                <div class="dakDetaylariSatirlar">
+                                    <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Level =</p>
                                     <p id="dak_levelDegeri">${sonDakBilgisiYaniti.dbDakListesi[0].dak_level}</p>
                                 </div>
@@ -399,11 +427,6 @@ async function dakMenusunuOlustur()
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Share Weight Next Level =</p>
                                     <p id="dak_sonrakiLevelHisseAgirlikDegeri">${sonDakBilgisiYaniti.dbDakListesi[0].share_weight_next}</p>
-                                </div>
-
-                                <div class="dakDetaylariSatirlar">
-                                    <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
-                                    <p id="dak_erisimTablosu">DAK Access Permissions</p>
                                 </div>
                             </div>
 
@@ -570,23 +593,32 @@ async function dakMenusunuOlustur()
                 `;
 
                 // aşağıdaki bu üç kısım belki son if bloğundan sonra yapılabilir
-                // şuanda buna emin değilim
-                document.getElementById("dakNftResmi").addEventListener('click', function()
+                // şuanda buna emin değilim, addEventListener a eklenen bu kodlar işleri tamamlandığında kaldırılmalıdır
+                if(!document.getElementById("dakNftResmi").onclick)
                 {
-                    dakListesiMenusunuGoster();
-                });
+                    document.getElementById("dakNftResmi").onclick = function()
+                    {
+                        dakListesiMenusunuGoster();
+                    };
+                }
 
-                document.getElementById("btnListele").addEventListener('click', function() 
+                if(!document.getElementById("btnListele").onclick)
                 {
-                    secenekleriYukle();
-                });
+                    document.getElementById("btnListele").onclick = function()
+                    {
+                        secenekleriYukle();
+                    };
+                }
 
-                document.getElementById("chbHepsiniSec1").addEventListener('click', function () 
+                if(!document.getElementById("chbHepsiniSec1").onclick)
                 {
-                    // burayı metodla yapmamın sebebi, farklı ekran boyutları için aynı işi yapan farklı id ye sahip elementler kullanmak zorunda kalırsam
-                    // listeninHepsiniSec(this); metodunda belirttiğim elemente göre işlemi yaptırabilmek
-                    listeninHepsiniSec(this);
-                });
+                    document.getElementById("chbHepsiniSec1").onclick = function()
+                    {
+                        // burayı metodla yapmamın sebebi, farklı ekran boyutları için aynı işi yapan farklı id ye sahip elementler kullanmak zorunda kalırsam
+                        // listeninHepsiniSec(this); metodunda belirttiğim elemente göre işlemi yaptırabilmek
+                        listeninHepsiniSec(this);
+                    };
+                }
 
                 // DAK bilgisi yerleştirildi, sonraki satırlar çalışmasın
                 return;
@@ -604,7 +636,7 @@ async function dakMenusunuOlustur()
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(
                         {
-                            from: ethereum.selectedAddress,
+                            from: seciliCuzdanAdresi,
                             chainId: zincirKodu,
                             nonceNewPurchase: sonDakBilgisiYaniti.nonceNewPurchase
                         })
@@ -618,7 +650,7 @@ async function dakMenusunuOlustur()
                     }
         
                     const yeniMintBaslatSonucu = await yeniMintBaslat.json();
-                    switch (yeniMintBaslatSonucu.mesajKodu) 
+                    switch (yeniMintBaslatSonucu.mesajKodu)
                     {
                         case "x": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
                         case "1": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
@@ -654,16 +686,14 @@ async function dakMenusunuOlustur()
 
                         console.log('Mint İşlemi Tamamlandı:', txHashMint);
 
-                        return;
-
-                        const yeniMintHashDogrula = await fetch('/app/yeniDakMintTxHashDogrula.php',
+                        const yeniMintHashDogrula = await fetch('/app/yeniDakMintTxDogrula.php',
                         {
                             method: 'POST',
                             credentials: 'include',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(
                             {
-                                from: ethereum.selectedAddress,
+                                from: yeniMintBaslatSonucu.userWallet,
                                 chainId: zincirKodu,
                                 nonceNewPurchase: sonDakBilgisiYaniti.nonceNewPurchase,
                                 txHash: txHashMint
@@ -675,6 +705,13 @@ async function dakMenusunuOlustur()
                             const sorguJsonMesaji = await yeniMintHashDogrula.json().catch(() => ({ message: "Bilinmeyen hata" }));
                             mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
                             return false;
+                        }
+
+                        const yeniMintHashDogrulaSonucu = await yeniMintHashDogrula.json();
+                        switch (yeniMintHashDogrulaSonucu.mesajKodu)
+                        {
+                            case "20": mesajKutusunuGoster("NFT mint başarılı, ağ doğrulaması sağlandı, lütfen Share Hold sayfasına tekrar tıklayın"); break;
+                            default: mesajKutusunuGoster(yeniMintHashDogrulaSonucu.mesajAciklamasi); return;
                         }
                     }
                 }
@@ -699,9 +736,160 @@ async function dakMenusunuOlustur()
     }
 }
 
-function dakListesiMenusunuGoster()
+async function dakListesiMenusunuGoster()
 {
-    document.getElementById("divDakListesiMenusu").style.display = "flex";
+    try 
+    {
+        document.getElementById('btnDakMenusu').disabled = true;
+
+        const cuzdanBagliMi = await connectWallet();
+        if(cuzdanBagliMi == true)
+        {
+            const seciliCuzdanAdresi = document.getElementById("p_cuzdanAdresi").innerText;
+            const zincirKodu = await ethereum.request({ method: 'eth_chainId' });
+            const userAgent = navigator.userAgent;
+
+            const sonDakBilgisi = await fetch('/app/dakListesiniGetir.php', 
+            {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(
+                {
+                    seciliCuzdanAdresi,
+                    zincirKodu,
+                    userAgent
+                })
+            });
+
+            if(sonDakBilgisi.ok === false)
+            {
+                const sonDakBilgisiJsonMesaji = await sonDakBilgisi.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                mesajKutusunuGoster("Json hatası: " + (sonDakBilgisiJsonMesaji.message || "Bilinmeyen hata"));
+                return false;
+            }
+
+            const sonDakBilgisiYaniti = await sonDakBilgisi.json();
+            switch (sonDakBilgisiYaniti.mesajKodu) 
+            {
+                case "15": break;
+                default: mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
+            }
+
+            if(sonDakBilgisiYaniti.dbDakListesi.length === 0)
+            {
+                mesajKutusunuGoster("No assets found for this wallet");
+                return;
+            }
+
+            let menu = document.getElementById('divDakListesiMenusu');
+            if(!menu)
+            {
+                menu = document.createElement("div");
+                menu.id = "divDakListesiMenusu";
+                menu.classList.add("dakListeMenusu");
+                menu.innerHTML = 
+                `
+                    <img src="images/list_left.png">
+                    <div class="dakListeMenusu_ustBaslik">
+                        <button class="dakListeMenusu_ustBaslik_btnKapat" id="btnDakListeMenusunuKapat">
+                            <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
+                            X
+                        </button>
+                    </div>
+                    <div class="dakListeMenusu_liste" id="divDakListeMenusu_liste">
+
+                    </div>
+                    <div class="dakListeMenusu_butonlar">
+                    <button class="dakListeMenusu_butonlar_dakOlustur" id="btnDakOlustur">
+                        <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
+                        New DAK Create
+                    </button>
+                    <button class="dakListeMenusu_butonlar_dakSec" id="btnDakSec">
+                        <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
+                        Level Up
+                    </button>
+                </div>
+                `;
+
+                document.body.appendChild(menu);
+
+                // **Menü kapatma butonu**
+                document.getElementById('btnDakListeMenusunuKapat').addEventListener("click", () => {
+                    menu.remove();
+                });
+
+                // **Menü dışına tıklanınca kapatma**
+                setTimeout(() => {
+                    document.addEventListener("click", (event) => {
+                        if (!menu.contains(event.target) && event.target.id !== "btnDakMenusu") {
+                            menu.remove();
+                        }
+                    }, { once: true }); // Sadece bir kez çalışsın
+                }, 0);
+            }
+
+            const listeContainer = menu.querySelector("#divDakListeMenusu_liste");
+
+            sonDakBilgisiYaniti.dbDakListesi.forEach(satir => 
+            {
+                const itemDiv = document.createElement("div");
+                itemDiv.classList.add("dakAnaCerceve");
+
+                itemDiv.innerHTML = `
+                    <div class="dakAnaCerceveResmi">
+                        <img src="${satir.image_url}" id="dakNftResmi_${satir.id}" onclick="dakSecimKutusunuSec(${satir.id})">
+                        <input type="checkbox" id="checkbox_${satir.id}" class="chbDakListedekiNesne">
+                    </div>
+                    <div class="dakAnaCerceveDetaySatirlari">
+                        <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                        <p>ID = </p>
+                        <p id="dak_AnaCerceveId">${satir.id}</p>
+                    </div>
+                    <div class="dakAnaCerceveDetaySatirlari">
+                        <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                        <p>Level = </p>
+                        <p id="dak_AnaCerceveLevel">${satir.dak_level}</p>
+                    </div>
+                    <div class="dakAnaCerceveDetaySatirlari">
+                        <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                        <p>Share Weight = </p>
+                        <p id="dak_AnaCerceveShareWeight">${satir.share_weight}</p>
+                    </div>
+                    <div class="dakAnaCerceveDetaySatirlari">
+                        <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                        <p>Share Next Weight = </p>
+                        <p id="dak_AnaCerceveShareNextWeight">${satir.share_weight_next}</p>
+                    </div>
+                `;
+
+                // Oluşturulan satırı liste içine ekleyelim
+                listeContainer.appendChild(itemDiv);
+            });
+
+            menu.style.display = "flex";
+
+            if(!document.getElementById('btnDakListeMenusunuKapat').onclick)
+            {
+                document.getElementById('btnDakListeMenusunuKapat').onclick = function ()
+                {
+                    document.getElementById("divDakListesiMenusu").remove();
+                };
+            }
+        }
+        else
+        {
+            mesajKutusunuGoster("Connect Wallet");
+        }
+    } 
+    catch (hataMesaji) 
+    {
+        mesajKutusunuGoster(hataMesaji.message);
+    }
+    finally
+    {
+        document.getElementById('btnDakMenusu').disabled = false;
+    }
 }
 
 function gen2UretmeMenusunuOlustur()
@@ -878,6 +1066,14 @@ function ilgiliSecimKutusunuSec(id)
     document.getElementById('chbHepsiniSec1').checked = false;
     // document.getElementById('chbHepsiniSec2').checked = false;
     yeniListeyiGuncelle(); // Seçimleri güncelle
+}
+
+function dakSecimKutusunuSec(id) {
+    console.log(id);
+    const checkbox = document.getElementById(`checkbox_${id}`);
+    if (checkbox) {
+        checkbox.checked = !checkbox.checked; // Seçiliyse kaldır, değilse seç
+    }
 }
 
 function yeniListeyiGuncelle()

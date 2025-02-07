@@ -266,7 +266,7 @@ body
 
     .dakListeMenusu
     {
-        width: 800px;
+        width: 680px;
         height: 600px;
         position: fixed;
         top: 50%;
@@ -340,6 +340,108 @@ body
             border: solid 0.0px;
             width: 100%;
             height: 520px;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-top: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-bottom: 5px;
+            gap: 15px;
+
+            .dakAnaCerceve
+            {
+                border: solid 0.0px;
+                width: 200px;
+                height: 340px;
+                padding-top: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-bottom: 5px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                gap: 1px;
+
+                .dakAnaCerceveResmi
+                {
+                    border: solid 0.0px;
+                    width: 100%;
+                    height: 190px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    background-image: url(../images/avaxtar-photo.png);
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center; /* Çerçeve merkezlenir */
+                    position: relative;
+                    display: flex;
+                    justify-content: center; /* Profil resmini ortalar */
+                    align-items: center; /* Profil resmini dikeyde ortalar */
+                    overflow: hidden; /* Profil resminin çerçeveden taşmamasını sağlar */                    
+
+                    img
+                    {
+                        position: absolute;
+                        width: 82%;
+                        height: auto;
+                        top: auto;
+                        bottom: auto;
+                        left: auto;
+                    }
+
+                    input
+                    {
+                        position: absolute;
+                        bottom: 18px;
+                        right: 17px;
+                        width: 20px;
+                        height: 20px;
+                    }
+                }
+
+                .dakAnaCerceveDetaySatirlari
+                {
+                    border: solid 0.1px;
+                    border-color: #2e80cd;
+                    clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+                    width: 100%;
+                    height: 30px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 2px 2px 2px 2px;
+                    position: relative;
+                    font-size: 1.5rem;
+
+                    p
+                    {
+                        margin-left: 10px;
+                    }
+
+                    #dak_AnaCerceveId
+                    {
+                        margin-left: 2px;
+                    }
+
+                    #dak_AnaCerceveLevel
+                    {
+                        margin-left: 2px;
+                    }
+
+                    #dak_AnaCerceveShareWeight
+                    {
+                        margin-left: 2px;
+                    }
+
+                    #dak_AnaCerceveShareNextWeight
+                    {
+                        margin-left: 2px;
+                    }
+                }
+            }
         }
 
         .dakListeMenusu_butonlar
@@ -572,6 +674,11 @@ body
                                 margin-left: 10px;
                             }
 
+                            #dak_idDegeri
+                            {
+                                margin-left: 2px;
+                            }
+
                             #dak_levelDegeri
                             {
                                 margin-left: 2px;
@@ -585,12 +692,6 @@ body
                             #dak_sonrakiLevelHisseAgirlikDegeri
                             {
                                 margin-left: 2px;
-                            }
-
-                            #dak_erisimTablosu
-                            {
-                                margin-left: auto;
-                                margin-right: auto;
                             }
 
                             .dakDetayArkaPlanResmi

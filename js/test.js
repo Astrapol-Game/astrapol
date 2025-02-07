@@ -924,89 +924,87 @@ let cuzdanBagliMi = false;
             for(say = 1; say <= 39; say++)
             {
                 document.getElementById("veriyeGoreOlusanListe").innerHTML += 
-                        `
-                            <div class="panel_3_1_gen2SecimKutusu">
-                                <div class="panel_3_1_gen2SecimKutusu_1_resim_id_rarity_sembol">
-                                    <div class="gen2SecimKutusu_1_resim">
-                                        <img src="images/1.png" onclick="ilgiliSecimKutusunuSec(${say + 10})">
-                                        <input type="checkbox" class="chbListedekiNesne" id="${say + 10}" data-value="${level}">
-                                    </div>
-                                    <div class="gen2SecimKutusu_1_id">
-                                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                        ID ${say + 10}
-                                    </div>
-                                    <div class="gen2SecimKutusu_1_rarity_sembol">
-                                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                        <div class="gen2SecimKutusu_1_rarity">
-                                            ${seciliNadirlik.toUpperCase()}
-                                        </div>
-                                        <div class="gen2SecimKutusu_1_sembol">
-                                            <img src="images/${seciliNadirlik}.png">
-                                        </div>
-                                    </div>
+                `
+                    <div class="panel_3_1_gen2SecimKutusu">
+                        <div class="panel_3_1_gen2SecimKutusu_1_resim_id_rarity_sembol">
+                            <div class="gen2SecimKutusu_1_resim">
+                                <img src="images/1.png" onclick="ilgiliSecimKutusunuSec(${say + 10})">
+                                <input type="checkbox" class="chbListedekiNesne" id="${say + 10}" data-value="${level}">
+                            </div>
+                            <div class="gen2SecimKutusu_1_id">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                ID ${say + 10}
+                            </div>
+                            <div class="gen2SecimKutusu_1_rarity_sembol">
+                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                <div class="gen2SecimKutusu_1_rarity">
+                                    ${seciliNadirlik.toUpperCase()}
                                 </div>
-                                <div class="panel_3_1_gen2SecimKutusu_1_ozellikler">
-                                    <div class="ozellikler_name_secim">
-                                        <div class="ozellikler_name">
-                                            ${"test_" + say}
-                                        </div>
-                                    </div>
-                                    <div class="ozellikler_level_xp">
-                                        <div class="ozellikler_level">
-                                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                            Level 50
-                                        </div>
-                                        <div class="ozellikler_xp">
-                                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                            XP 500
-                                        </div>
-                                    </div>
-                                    <div class="ozellikler_dna">
-                                        <div class="dna_hp">
-                                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                            <p>HP</p>
-                                            <p>999</p>   
-                                        </div>
-                                        <div class="dna_def">
-                                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                            <p>DEF</p>
-                                            <p>999</p>
-                                        </div>
-                                        <div class="dna_atk">
-                                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                            <p>ATK</p>
-                                            <p>999</p>
-                                        </div>
-                                        <div class="dna_speed">
-                                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                            <p>SPD</p>
-                                            <p>999</p>
-                                        </div>
-                                    </div>
-                                    <div class="ozellikler_rna">
-                                        <div class="rna_detaylar">
-                                            <div class="rna_genus">
-                                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                                GENUS
-                                            </div>
-                                            <div class="rna_code">
-                                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                                CODE
-                                            </div>
-                                            <div class="rna_talent">
-                                                <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                                TALENT
-                                            </div>
-                                        </div>
-                                        <div class="rna_sembol">
-                                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
-                                        </div>
-                                    </div>
+                                <div class="gen2SecimKutusu_1_sembol">
+                                    <img src="images/${seciliNadirlik}.png">
                                 </div>
                             </div>
-                        `;
-
-
+                        </div>
+                        <div class="panel_3_1_gen2SecimKutusu_1_ozellikler">
+                            <div class="ozellikler_name_secim">
+                                <div class="ozellikler_name">
+                                    ${"test_" + say}
+                                </div>
+                            </div>
+                            <div class="ozellikler_level_xp">
+                                <div class="ozellikler_level">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    Level 50
+                                </div>
+                                <div class="ozellikler_xp">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    XP 500
+                                </div>
+                            </div>
+                            <div class="ozellikler_dna">
+                                <div class="dna_hp">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>HP</p>
+                                    <p>999</p>   
+                                </div>
+                                <div class="dna_def">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>DEF</p>
+                                    <p>999</p>
+                                </div>
+                                <div class="dna_atk">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>ATK</p>
+                                    <p>999</p>
+                                </div>
+                                <div class="dna_speed">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                    <p>SPD</p>
+                                    <p>999</p>
+                                </div>
+                            </div>
+                            <div class="ozellikler_rna">
+                                <div class="rna_detaylar">
+                                    <div class="rna_genus">
+                                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                        GENUS
+                                    </div>
+                                    <div class="rna_code">
+                                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                        CODE
+                                    </div>
+                                    <div class="rna_talent">
+                                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                        TALENT
+                                    </div>
+                                </div>
+                                <div class="rna_sembol">
+                                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="gen2YatayDetayArkaPlanResmi">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
             }
         }
 

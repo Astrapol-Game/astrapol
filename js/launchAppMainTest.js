@@ -2,8 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', async () =>
 {
-    const { keccak256 } = await import('https://cdn.jsdelivr.net/npm/js-sha3@0.8.0/build/sha3.min.js');
-
     document.getElementById('btnMesajKutusunuKapat').addEventListener('click', () =>
     {
         document.getElementById("divMesajKutusu").style.display = "none";
@@ -90,10 +88,33 @@ document.addEventListener('DOMContentLoaded', async () =>
         transformationMergeMenusunuOlustur();
     });
 
-    // document.getElementById('btnListele').addEventListener('click', function()
-    // {
-    //     listeyiDoldurTest();
-    // });
+    document.getElementById('btnListele').addEventListener('click', function()
+    {
+        listeyiDoldurTest();
+    });
+
+    if (window.ethereum && window.ethereum.isMetaMask) 
+    {
+        window.ethereum.on("accountsChanged", (accounts) => {
+            if (accounts.length === 0) 
+            {
+                window.location.reload();
+            } 
+            else 
+            {
+                connectWallet();
+            }
+        });
+    } 
+    else 
+    {
+        console.warn("MetaMask yüklü değil!");
+    }
+
+    document.getElementById('dakNftResmi').addEventListener('click', function()
+    {
+        dakListesiMenusunuGoster();
+    });
 });
 
 function sayiFormatlama(sayi, islem) 
@@ -197,12 +218,19 @@ async function connectWallet()
             let cuzdanAdresleri = await ethereum.request({ method:'eth_accounts'});
             if(cuzdanAdresleri.length === 0)
             {
-                cuzdanAdresleri = await ethereum.request({method: 'eth_requestAccounts'});   
+                cuzdanAdresleri = await ethereum.request({method: 'eth_requestAccounts'});
             }
 
             const seciliCuzdanAdresi = cuzdanAdresleri[0];
             const chainId = await ethereum.request({ method: 'eth_chainId' });
             const userAgent = navigator.userAgent;
+
+            if (!sessionStorage.getItem("session_id")) 
+            {
+                sessionStorage.setItem("session_id", Math.random().toString(36).substring(2, 11));
+            }            
+
+            const sessionId = sessionStorage.getItem("session_id");
 
             const baglantiDurumu = await fetch('/app/baglantiOlustur.php', 
             {
@@ -213,7 +241,8 @@ async function connectWallet()
                 {
                     seciliCuzdanAdresi, 
                     chainId,
-                    userAgent
+                    userAgent,
+                    sessionId
                 })
             });
 
@@ -228,11 +257,14 @@ async function connectWallet()
             const baglantiDurumuSonucu = await baglantiDurumu.json();
             if (baglantiDurumuSonucu.mesajKodu === "6")
             {
-                const imzaMesaji = "Please sign this message to verify your wallet.";
+                const onayliChainId = baglantiDurumuSonucu.chain;
+                const onayliCuzdanAdresi = baglantiDurumuSonucu.userWallet;
+                const onayliImzaMesaji = baglantiDurumuSonucu.signMessage;
+
                 const imza = await ethereum.request(
                 {
                     method: 'personal_sign',
-                    params: [imzaMesaji, seciliCuzdanAdresi],
+                    params: [onayliImzaMesaji, onayliCuzdanAdresi],
                 });
 
                 const baglantiOnayla = await fetch('/app/baglantiOnayla.php', 
@@ -242,10 +274,10 @@ async function connectWallet()
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(
                     {
-                        seciliCuzdanAdresi, 
-                        chainId,
+                        onayliCuzdanAdresi, 
+                        onayliChainId,
                         userAgent,
-                        imzaMesaji,
+                        onayliImzaMesaji,
                         imza
                     })
                 });
@@ -259,9 +291,9 @@ async function connectWallet()
                 }
 
                 const baglantiOnaylaSonucu = await baglantiOnayla.json();
-                if(baglantiOnaylaSonucu.mesajKodu === "5")
+                if(baglantiOnaylaSonucu.mesajKodu === "5" || baglantiOnaylaSonucu.mesajKodu === "32")
                 {
-                    document.getElementById("p_cuzdanAdresi").innerText = seciliCuzdanAdresi;
+                    document.getElementById("p_cuzdanAdresi").innerText = baglantiOnaylaSonucu.userWallet;
                     document.getElementById("p_ag").innerText = baglantiOnaylaSonucu.chain;
                     return true;
                 }
@@ -274,7 +306,7 @@ async function connectWallet()
             }
             else if(baglantiDurumuSonucu.mesajKodu === "14")
             {
-                document.getElementById("p_cuzdanAdresi").innerText = seciliCuzdanAdresi;
+                document.getElementById("p_cuzdanAdresi").innerText = baglantiDurumuSonucu.userWallet;
                 document.getElementById("p_ag").innerText = baglantiDurumuSonucu.chain;
                 return true;
             }
@@ -385,6 +417,12 @@ async function dakMenusunuOlustur()
                             <div class="dakDetaylari">
                                 <div class="dakDetaylariSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                                    <p>ID =</p>
+                                    <p id="dak_idDegeri">${sonDakBilgisiYaniti.dbDakListesi[0].id}</p>
+                                </div>
+
+                                <div class="dakDetaylariSatirlar">
+                                    <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Level =</p>
                                     <p id="dak_levelDegeri">${sonDakBilgisiYaniti.dbDakListesi[0].dak_level}</p>
                                 </div>
@@ -399,11 +437,6 @@ async function dakMenusunuOlustur()
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Share Weight Next Level =</p>
                                     <p id="dak_sonrakiLevelHisseAgirlikDegeri">${sonDakBilgisiYaniti.dbDakListesi[0].share_weight_next}</p>
-                                </div>
-
-                                <div class="dakDetaylariSatirlar">
-                                    <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
-                                    <p id="dak_erisimTablosu">DAK Access Permissions</p>
                                 </div>
                             </div>
 
@@ -597,66 +630,55 @@ async function dakMenusunuOlustur()
                 const secim = await onayKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi);
                 if(secim === "olustur")
                 {
-                    const miktarWei = (BigInt(sonDakBilgisiYaniti.tokenDegeri * 10 ** 18)).toString(16); // Wei'ye çevir
-                    const transactionParams = {
-                        from: ethereum.selectedAddress,
-                        to: sonDakBilgisiYaniti.oyunCuzdanAdresi,
-                        value: '0x' + miktarWei,
-                        chainId: zincirKodu,
-                        data: sonDakBilgisiYaniti.nonceHexDegeri
-                    };
-
-                    const txHash = await ethereum.request({
-                        method: 'eth_sendTransaction',
-                        params: [transactionParams]
-                    });
-
-                    const odemeSonrasiYanit = await fetch('/app/yeniDakOdemeDogrula.php',
+                    const yeniMintBaslat = await fetch('/app/yeniDakMintHazirlaBaslat.php',
                     {
                         method: 'POST',
                         credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(
                         {
-                            txHash: txHash,
                             from: ethereum.selectedAddress,
                             chainId: zincirKodu,
-                            nonceHex: sonDakBilgisiYaniti.nonceHexDegeri
+                            nonceNewPurchase: sonDakBilgisiYaniti.nonceNewPurchase
                         })
                     });
 
-                    if(odemeSonrasiYanit.ok === false)
+                    if(yeniMintBaslat.ok === false)
                     {
-                        const sorguJsonMesaji = await odemeSonrasiYanit.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                        const sorguJsonMesaji = await yeniMintBaslat.json().catch(() => ({ message: "Bilinmeyen hata" }));
                         mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
                         return false;
                     }
         
-                    const odemeSonrasiYanitSonucu = await odemeSonrasiYanit.json();
-                    switch (odemeSonrasiYanitSonucu.mesajKodu) 
+                    const yeniMintBaslatSonucu = await yeniMintBaslat.json();
+                    switch (yeniMintBaslatSonucu.mesajKodu)
                     {
-                        case "x": mesajKutusunuGoster(odemeSonrasiYanitSonucu.mesajAciklamasi); return;
-                        case "1": mesajKutusunuGoster(odemeSonrasiYanitSonucu.mesajAciklamasi); return;
-                        case "3": mesajKutusunuGoster(odemeSonrasiYanitSonucu.mesajAciklamasi); return;
-                        case "4": mesajKutusunuGoster(odemeSonrasiYanitSonucu.mesajAciklamasi); return;
-                        case "7": mesajKutusunuGoster(odemeSonrasiYanitSonucu.mesajAciklamasi); return;
-                        case "21": mesajKutusunuGoster(odemeSonrasiYanitSonucu.mesajAciklamasi); return;
-                        case "25": mesajKutusunuGoster(odemeSonrasiYanitSonucu.mesajAciklamasi); break;
-                        case "88": mesajKutusunuGoster(odemeSonrasiYanitSonucu.mesajAciklamasi); return; // geçici ekledim, sonra kaldır
+                        case "x": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
+                        case "1": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
+                        case "3": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
+                        case "4": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
+                        case "7": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
+                        case "21": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
+                        case "25": break;
+                        case "27": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
+                        case "29": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
+                        case "30": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
+                        case "31": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
                         default: return;
                     }
 
-                    if(odemeSonrasiYanitSonucu.mesajKodu === "25")
+                    if(yeniMintBaslatSonucu.mesajKodu === "25")
                     {
-                        // 🚀 İşlem Verilerini Hazırla
+                        // İşlem Verilerini Hazırla
                         const transactionParameters = {
-                            from: odemeSonrasiYanitSonucu.userWallet,
-                            to: odemeSonrasiYanitSonucu.contractAddress,
-                            value: odemeSonrasiYanitSonucu.priceHex,
-                            data: odemeSonrasiYanitSonucu.data,
+                            from: yeniMintBaslatSonucu.userWallet,
+                            to: yeniMintBaslatSonucu.contractAddress,
+                            value: yeniMintBaslatSonucu.priceHex,
+                            data: yeniMintBaslatSonucu.data,
                         };
 
                         console.log(transactionParameters);
+                        console.log(yeniMintBaslatSonucu.signature);
 
                         const txHashMint = await ethereum.request({
                             method: 'eth_sendTransaction',
@@ -665,7 +687,38 @@ async function dakMenusunuOlustur()
 
                         console.log('Mint İşlemi Tamamlandı:', txHashMint);
 
-                        mesajKutusunuGoster(`Mint başarılı. Tx Hash: ${txHashMint}`);
+                        const yeniMintHashDogrula = await fetch('/app/yeniDakMintTxHashDogrula.php',
+                        {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(
+                            {
+                                from: ethereum.selectedAddress,
+                                chainId: zincirKodu,
+                                nonceNewPurchase: sonDakBilgisiYaniti.nonceNewPurchase,
+                                txHash: txHashMint
+                            })
+                        });
+    
+                        if(yeniMintHashDogrula.ok === false)
+                        {
+                            const sorguJsonMesaji = await yeniMintHashDogrula.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                            mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                            return false;
+                        }
+
+                        const yeniMintHashDogrulaSonucu = await yeniMintHashDogrula.json();
+                        switch (yeniMintHashDogrulaSonucu.mesajKodu)
+                        {
+                            case "x": mesajKutusunuGoster(yeniMintHashDogrulaSonucu.mesajAciklamasi); return;
+                            case "1": mesajKutusunuGoster(yeniMintHashDogrulaSonucu.mesajAciklamasi); return;
+                            case "3": mesajKutusunuGoster(yeniMintHashDogrulaSonucu.mesajAciklamasi); return;
+                            case "4": mesajKutusunuGoster(yeniMintHashDogrulaSonucu.mesajAciklamasi); return;
+                            case "7": mesajKutusunuGoster(yeniMintHashDogrulaSonucu.mesajAciklamasi); return;
+                            case "20": break;
+                            default: return;
+                        }
                     }
                 }
                 else
@@ -689,9 +742,32 @@ async function dakMenusunuOlustur()
     }
 }
 
-function dakListesiMenusunuGoster()
+async function dakListesiMenusunuGoster()
 {
-    document.getElementById("divDakListesiMenusu").style.display = "flex";
+    try 
+    {
+        document.getElementById('btnDakMenusu').disabled = true;
+
+        document.querySelectorAll(".dakAnaCerceveResmi img").forEach(img => {
+            // img'nin ID'sini al (veya varsayılan bir değer ver)
+            let imgId = img.id || "defaultId"; 
+            
+            // Tıklanınca çalışacak fonksiyonu ekle
+            img.onclick = function() {
+                dakSecimKutusunuSec(imgId);
+            };
+        });
+
+        document.getElementById("divDakListesiMenusu").style.display = "flex";
+    } 
+    catch (hataMesaji) 
+    {
+        mesajKutusunuGoster(hataMesaji.message);
+    }
+    finally
+    {
+        document.getElementById('btnDakMenusu').disabled = false;
+    }
 }
 
 function gen2UretmeMenusunuOlustur()
@@ -868,6 +944,11 @@ function ilgiliSecimKutusunuSec(id)
     document.getElementById('chbHepsiniSec1').checked = false;
     // document.getElementById('chbHepsiniSec2').checked = false;
     yeniListeyiGuncelle(); // Seçimleri güncelle
+}
+
+function dakSecimKutusunuSec(id) 
+{
+    console.log("tıklananResim ID si");
 }
 
 function yeniListeyiGuncelle()
