@@ -83,11 +83,6 @@ document.addEventListener('DOMContentLoaded', async () =>
         transformationMergeMenusunuOlustur();
     });
 
-    // document.getElementById('btnListele').addEventListener('click', function()
-    // {
-    //     listeyiDoldurTest();
-    // });
-
     if (window.ethereum && window.ethereum.isMetaMask) 
     {
         window.ethereum.on("accountsChanged", () => window.location.reload());
@@ -106,12 +101,22 @@ document.addEventListener('DOMContentLoaded', async () =>
     }
 });
 
-function sayiFormatlama(sayi, islem) 
+function sayiFormatlama2(sayi, islem) 
 {
     if (islem === "gorunumeCevir") 
     {
-        // Sayıyı görüntüleme formatına çevir: 2563.25 => 2.563,25
-        return sayi.toFixed(4).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        // bazen değer sayısal gibi görünse de aslında string olabilir ve toFixed string ile çalışamaz
+        sayi = Number(sayi);
+
+        // Sayıyı 5 basamaklı ondalık hale getir
+        let formatted = sayi.toFixed(5);
+
+        // Binlik ayracı ekle
+        let parts = formatted.split(".");
+
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+        return parts.join(",");
     } 
     else if (islem === "islemeCevir") 
     {
@@ -152,50 +157,6 @@ function onayKutusunuGoster(mesaj)
             cevap("iptal");
         };
     });
-}
-
-function listeyiDoldurTest()
-{
-    document.getElementById("hisseMenusu_2_liste").innerHTML = "";
-    const seciliNesne = "gen2";
-    const seciliNadirlik = "rare";
-    var level = 35;
-    for(say = 1; say <= 39; say++)
-    {
-        document.getElementById("hisseMenusu_2_liste").innerHTML += 
-        `
-            <div class="divNesneSecim">
-                <div class="divNesneSecimResim">
-                    <img src="images/1.png" id="profilResmi" onclick="ilgiliSecimKutusunuSec(${say + 10})">
-                    <input type="checkbox" class="chbListedekiNesne" id="${say + 10}" data-value="${level}">
-                </div>
-                <div class="divNesneSecimSatirlar">
-                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
-                    <p>ID</p>
-                    <p id="nesne_id">${say + 10}</p>
-                </div>
-                <div class="divNesneSecimSatirlar">
-                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
-                    <p>Level</p>
-                    <p id="nesne_levelDegeri">${level}</p>
-                </div>
-                <div class="divNesneSecimSatirlar">
-                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
-                    <div class="divNesneSecimNadirlikResmi">
-                        <img src="images/${seciliNadirlik}.png">
-                    </div>
-                    <div class="divNesneSecimNadirlikAdi">
-                        <p id="nesne_nadirlik">${seciliNadirlik.toUpperCase()}</p>
-                    </div>
-                </div>
-                <div class="divNesneSecimSatirlar">
-                    <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
-                    <p>AVAX value =</p>
-                    <p id="nesne_avaxDegeri">0,025</p>
-                </div>
-            </div>
-        `;
-    }
 }
 
 async function connectWallet()
@@ -397,12 +358,15 @@ async function dakMenusunuOlustur()
 
             if(sonDakBilgisiYaniti.mesajKodu === "15")
             {
+                const formattedPrice = sayiFormatlama2(sonDakBilgisiYaniti.dakOzellikleri[0].price, "gorunumeCevir");
+                const formattedTotalCost = formattedPrice;
+
                 document.getElementById("panel_3_2").innerHTML = 
                 `
                     <div class="hisseMenusu_1">
                         <div class="dakDivi">
                             <div class="dakResmi">
-                                <img id="dakNftResmi" src="${sonDakBilgisiYaniti.dakOzellikleri[0].image_url}">
+                                <img id="dakNftResmi" src="${sonDakBilgisiYaniti.dakOzellikleri[0].imageUrl}">
                             </div>
                             <div class="dakDetaylari">
                                 <div class="dakDetaylariSatirlar">
@@ -414,19 +378,19 @@ async function dakMenusunuOlustur()
                                 <div class="dakDetaylariSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Level =</p>
-                                    <p id="dak_levelDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].dak_level}</p>
+                                    <p id="dak_levelDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].level}</p>
                                 </div>
 
                                 <div class="dakDetaylariSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Share Weight =</p>
-                                    <p id="dak_hisseAgirlikDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].share_weight}</p>
+                                    <p id="dak_hisseAgirlikDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].sw}</p>
                                 </div>
 
                                 <div class="dakDetaylariSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Share Weight Next Level =</p>
-                                    <p id="dak_sonrakiLevelHisseAgirlikDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].share_weight_next}</p>
+                                    <p id="dak_sonrakiLevelHisseAgirlikDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].swn}</p>
                                 </div>
                             </div>
 
@@ -434,12 +398,12 @@ async function dakMenusunuOlustur()
                                 <div class="finansDiviSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Processing Fee (AVXT) =</p>
-                                    <p id="dak_islemUcreti">100</p>
+                                    <p id="dak_islemUcreti">0</p>
                                 </div>
                                 <div class="finansDiviSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Level Up Cost (AVAX) =</p>
-                                    <p id="dak_sonrakiLevelAvaxUcreti">2,3842</p>
+                                    <p id="dak_sonrakiLevelAvaxUcreti">${formattedPrice}</p>
                                 </div>
                                 <div class="finansDiviSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
@@ -449,7 +413,7 @@ async function dakMenusunuOlustur()
                                 <div class="finansDiviSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Total Cost (AVAX) =</p>
-                                    <p id="dak_toplamAvaxUcreti">2,3842</p>
+                                    <p id="dak_toplamAvaxUcreti">${formattedTotalCost}</p>
                                 </div>
                             </div>
 
@@ -459,7 +423,7 @@ async function dakMenusunuOlustur()
                                     <label for="chbHepsiniSec1">Select All</label>
                                 </div>
                                 
-                                <button id="btnLevelUp">
+                                <button id="btnLevelUp_${sonDakBilgisiYaniti.dakOzellikleri[0].id}">
                                     <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
                                     <p>Level Up</p>
                                 </button>
@@ -599,6 +563,14 @@ async function dakMenusunuOlustur()
                     document.getElementById("dakNftResmi").onclick = function()
                     {
                         dakListesiMenusunuGoster();
+                    };
+                }
+
+                if(!document.getElementById(`btnLevelUp_${sonDakBilgisiYaniti.dakOzellikleri[0].id}`).onclick)
+                {
+                    document.getElementById(`btnLevelUp_${sonDakBilgisiYaniti.dakOzellikleri[0].id}`).onclick = function()
+                    {
+                        dakGuncelle();
                     };
                 }
 
@@ -742,172 +714,164 @@ async function dakListesiMenusunuGoster()
     {
         document.getElementById('btnDakMenusu').disabled = true;
 
-        const cuzdanBagliMi = await connectWallet();
-        if(cuzdanBagliMi == true)
+        const seciliCuzdanAdresi = document.getElementById("p_cuzdanAdresi").innerText;
+        const zincirKodu = await ethereum.request({ method: 'eth_chainId' });
+        const userAgent = navigator.userAgent;
+
+        const sonDakBilgisi = await fetch('/app/dakListesiniGetir.php', 
         {
-            const seciliCuzdanAdresi = document.getElementById("p_cuzdanAdresi").innerText;
-            const zincirKodu = await ethereum.request({ method: 'eth_chainId' });
-            const userAgent = navigator.userAgent;
-
-            const sonDakBilgisi = await fetch('/app/dakListesiniGetir.php', 
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
             {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(
-                {
-                    seciliCuzdanAdresi,
-                    zincirKodu,
-                    userAgent
-                })
-            });
+                seciliCuzdanAdresi,
+                zincirKodu,
+                userAgent
+            })
+        });
 
-            if(sonDakBilgisi.ok === false)
-            {
-                const sonDakBilgisiJsonMesaji = await sonDakBilgisi.json().catch(() => ({ message: "Bilinmeyen hata" }));
-                mesajKutusunuGoster("Json hatası: " + (sonDakBilgisiJsonMesaji.message || "Bilinmeyen hata"));
-                return false;
-            }
+        if(sonDakBilgisi.ok === false)
+        {
+            const sonDakBilgisiJsonMesaji = await sonDakBilgisi.json().catch(() => ({ message: "Bilinmeyen hata" }));
+            mesajKutusunuGoster("Json hatası: " + (sonDakBilgisiJsonMesaji.message || "Bilinmeyen hata"));
+            return false;
+        }
 
-            const sonDakBilgisiYaniti = await sonDakBilgisi.json();
-            switch (sonDakBilgisiYaniti.mesajKodu) 
-            {
-                case "15": break;
-                default: mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
-            }
+        const sonDakBilgisiYaniti = await sonDakBilgisi.json();
+        switch (sonDakBilgisiYaniti.mesajKodu) 
+        {
+            case "15": break;
+            default: mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
+        }
 
-            if(sonDakBilgisiYaniti.dakListesi.length === 0)
-            {
-                mesajKutusunuGoster("No assets found for this wallet");
-                return;
-            }
+        if(sonDakBilgisiYaniti.dakListesi.length === 0)
+        {
+            mesajKutusunuGoster("No assets found for this wallet");
+            return;
+        }
 
-            let menu = document.getElementById('divDakListesiMenusu');
-            if(!menu)
-            {
-                menu = document.createElement("div");
-                menu.id = "divDakListesiMenusu";
-                menu.classList.add("dakListeMenusu");
-                menu.innerHTML = 
-                `
-                    <img src="images/list_left.png">
-                    <div class="dakListeMenusu_ustBaslik">
-                        <button class="dakListeMenusu_ustBaslik_btnKapat" id="btnDakListeMenusunuKapat">
-                            <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
-                            X
-                        </button>
-                    </div>
-                    <div class="dakListeMenusu_liste" id="divDakListeMenusu_liste">
-
-                    </div>
-                    <div class="dakListeMenusu_butonlar">
-                    <button class="dakListeMenusu_butonlar_dakOlustur" id="btnDakOlustur">
+        let menu = document.getElementById('divDakListesiMenusu');
+        if(!menu)
+        {
+            menu = document.createElement("div");
+            menu.id = "divDakListesiMenusu";
+            menu.classList.add("dakListeMenusu");
+            menu.innerHTML = 
+            `
+                <img src="images/list_left.png">
+                <div class="dakListeMenusu_ustBaslik">
+                    <button class="dakListeMenusu_ustBaslik_btnKapat" id="btnDakListeMenusunuKapat">
                         <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
-                        New DAK Create
-                    </button>
-                    <button class="dakListeMenusu_butonlar_dakSec" id="btnDakSec">
-                        <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
-                        Level Up
+                        X
                     </button>
                 </div>
-                `;
+                <div class="dakListeMenusu_liste" id="divDakListeMenusu_liste">
 
-                document.body.appendChild(menu);
-            }
+                </div>
+                <div class="dakListeMenusu_butonlar">
+                <button class="dakListeMenusu_butonlar_dakOlustur" id="btnDakOlustur">
+                    <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
+                    New DAK Create
+                </button>
+                <button class="dakListeMenusu_butonlar_dakSec" id="btnDakSec">
+                    <img src="images/butonArkaPlanResmi.png" class="dakListesiButonArkaPlanResmi">
+                    Level Up
+                </button>
+            </div>
+            `;
 
-            // NFT seçim butonu için olay ekle
-            document.getElementById("btnDakSec").addEventListener("click", seciliDakBilgileriniGuncelle);
+            document.body.appendChild(menu);
+        }
 
-            // **Menü kapatma butonu**
-            document.getElementById('btnDakListeMenusunuKapat').addEventListener("click", () => {
+        // NFT seçim butonu için olay ekle
+        document.getElementById("btnDakSec").addEventListener("click", seciliDakBilgileriniGuncelle);
+
+        // **Menü kapatma butonu**
+        document.getElementById('btnDakListeMenusunuKapat').addEventListener("click", () => {
+            menu.remove();
+            document.removeEventListener("mousedown", menuDisaTiklaKapat); // Event Listener'ı kaldır
+        });
+
+        // **Menü dışına tıklayınca kapatma (sadece bir tane event listener ekleriz)**
+        function menuDisaTiklaKapat(event) 
+        {
+            if (!menu.contains(event.target) && event.target.id !== "btnDakMenusu") 
+            {
                 menu.remove();
                 document.removeEventListener("mousedown", menuDisaTiklaKapat); // Event Listener'ı kaldır
-            });
-
-            // **Menü dışına tıklayınca kapatma (sadece bir tane event listener ekleriz)**
-            function menuDisaTiklaKapat(event) 
-            {
-                if (!menu.contains(event.target) && event.target.id !== "btnDakMenusu") 
-                {
-                    menu.remove();
-                    document.removeEventListener("mousedown", menuDisaTiklaKapat); // Event Listener'ı kaldır
-                }
             }
+        }
 
-            // **Menü her açıldığında olay dinleyicisini ekleriz**
-            document.addEventListener("mousedown", menuDisaTiklaKapat);
+        // **Menü her açıldığında olay dinleyicisini ekleriz**
+        document.addEventListener("mousedown", menuDisaTiklaKapat);
 
-            const listeContainer = menu.querySelector("#divDakListeMenusu_liste");
-            listeContainer.addEventListener("click", function(event)
+        const listeContainer = menu.querySelector("#divDakListeMenusu_liste");
+        listeContainer.addEventListener("click", function(event)
+        {
+            const clickedImage = event.target.closest("img"); // En yakın img öğesini bul
+            if (clickedImage && clickedImage.id.startsWith("dakNftResmi_")) 
             {
-                const clickedImage = event.target.closest("img"); // En yakın img öğesini bul
-                if (clickedImage && clickedImage.id.startsWith("dakNftResmi_")) 
-                {
-                    const id = clickedImage.id.replace("dakNftResmi_", ""); // ID'yi al
-                    console.log(`Resim tıklandı! ID: ${id}`);
-            
-                    // **İlgili checkbox'ı bul**
-                    const checkbox = document.getElementById(`checkbox_${id}`);
-            
-                    if (checkbox) {
-                        // **Eğer checkbox zaten seçiliyse, seçimini kaldır**
-                        if (checkbox.checked) {
-                            checkbox.checked = false;
-                        } else {
-                            // **Diğer tüm checkbox'ları sıfırla**
-                            document.querySelectorAll(".chbDakListedekiNesne").forEach(chb => {
-                                chb.checked = false;
-                            });
-            
-                            // **Tıklanan checkbox'ı seçili yap**
-                            checkbox.checked = true;
-                        }
+                const id = clickedImage.id.replace("dakNftResmi_", ""); // ID'yi al
+                console.log(`Resim tıklandı! ID: ${id}`);
+        
+                // **İlgili checkbox'ı bul**
+                const checkbox = document.getElementById(`checkbox_${id}`);
+        
+                if (checkbox) {
+                    // **Eğer checkbox zaten seçiliyse, seçimini kaldır**
+                    if (checkbox.checked) {
+                        checkbox.checked = false;
+                    } else {
+                        // **Diğer tüm checkbox'ları sıfırla**
+                        document.querySelectorAll(".chbDakListedekiNesne").forEach(chb => {
+                            chb.checked = false;
+                        });
+        
+                        // **Tıklanan checkbox'ı seçili yap**
+                        checkbox.checked = true;
                     }
                 }
-            });
+            }
+        });
 
-            sonDakBilgisiYaniti.dakListesi.forEach(satir => 
-            {
-                const itemDiv = document.createElement("div");
-                itemDiv.classList.add("dakAnaCerceve");
-
-                itemDiv.innerHTML = `
-                    <div class="dakAnaCerceveResmi">
-                        <img src="${satir.image_url}" id="dakNftResmi_${satir.id}">
-                        <input type="checkbox" id="checkbox_${satir.id}" class="chbDakListedekiNesne">
-                    </div>
-                    <div class="dakAnaCerceveDetaySatirlari">
-                        <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
-                        <p>ID = </p>
-                        <p id="dak_AnaCerceveId">${satir.id}</p>
-                    </div>
-                    <div class="dakAnaCerceveDetaySatirlari">
-                        <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
-                        <p>Level = </p>
-                        <p id="dak_AnaCerceveLevel">${satir.dak_level}</p>
-                    </div>
-                    <div class="dakAnaCerceveDetaySatirlari">
-                        <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
-                        <p>Share Weight = </p>
-                        <p id="dak_AnaCerceveShareWeight">${satir.share_weight}</p>
-                    </div>
-                    <div class="dakAnaCerceveDetaySatirlari">
-                        <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
-                        <p>Share Next Weight = </p>
-                        <p id="dak_AnaCerceveShareNextWeight">${satir.share_weight_next}</p>
-                    </div>
-                `;
-
-                // Oluşturulan satırı liste içine ekleyelim
-                listeContainer.appendChild(itemDiv);
-            });
-
-            menu.style.display = "flex";
-        }
-        else
+        sonDakBilgisiYaniti.dakListesi.forEach(satir => 
         {
-            mesajKutusunuGoster("Connect Wallet");
-        }
+            const itemDiv = document.createElement("div");
+            itemDiv.classList.add("dakAnaCerceve");
+
+            itemDiv.innerHTML = `
+                <div class="dakAnaCerceveResmi">
+                    <img src="${satir.image_url}" id="dakNftResmi_${satir.id}">
+                    <input type="checkbox" id="checkbox_${satir.id}" class="chbDakListedekiNesne">
+                </div>
+                <div class="dakAnaCerceveDetaySatirlari">
+                    <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                    <p>ID = </p>
+                    <p id="dak_AnaCerceveId">${satir.id}</p>
+                </div>
+                <div class="dakAnaCerceveDetaySatirlari">
+                    <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                    <p>Level = </p>
+                    <p id="dak_AnaCerceveLevel">${satir.dak_level}</p>
+                </div>
+                <div class="dakAnaCerceveDetaySatirlari">
+                    <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                    <p>Share Weight = </p>
+                    <p id="dak_AnaCerceveShareWeight">${satir.share_weight}</p>
+                </div>
+                <div class="dakAnaCerceveDetaySatirlari">
+                    <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
+                    <p>Share Next Weight = </p>
+                    <p id="dak_AnaCerceveShareNextWeight">${satir.share_weight_next}</p>
+                </div>
+            `;
+
+            // Oluşturulan satırı liste içine ekleyelim
+            listeContainer.appendChild(itemDiv);
+        });
+
+        menu.style.display = "flex";
     } 
     catch (hataMesaji) 
     {
@@ -985,6 +949,7 @@ async function seciliDakBilgileriniGuncelle()
         document.getElementById("dak_levelDegeri").textContent  = sonDakBilgisiYaniti.dakOzellikleri[0].dak_level;
         document.getElementById("dak_hisseAgirlikDegeri").textContent  = sonDakBilgisiYaniti.dakOzellikleri[0].share_weight;
         document.getElementById("dak_sonrakiLevelHisseAgirlikDegeri").textContent  = sonDakBilgisiYaniti.dakOzellikleri[0].share_weight_next;
+        document.querySelector(".hisseMenusu_1_islemlerDivi").querySelector("button").id = `btnLevelUp_${sonDakBilgisiYaniti.dakOzellikleri[0].id}`;
     } 
     catch (hataMesaji) 
     {
@@ -1070,16 +1035,21 @@ async function secenekleriYukle()
             });
 
             const seciliCuzdanAdresi = document.getElementById("p_cuzdanAdresi").innerText;
+            const zincirKodu = await ethereum.request({ method: 'eth_chainId' });
+            const userAgent = navigator.userAgent;
 
             const sorgu = await fetch('/app/gen2ListesiniGetir.php', 
             {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(
                 {
-                    seciliNesne: seciliNesneler,
-                    seciliNadirlik: seciliNadirlikler,
-                    seciliCuzdanAdresi: seciliCuzdanAdresi
+                    seciliCuzdanAdresi,
+                    zincirKodu,
+                    userAgent,
+                    seciliNesneler,
+                    seciliNadirlikler
                 })
             });
 
@@ -1097,57 +1067,75 @@ async function secenekleriYukle()
                 return;
             }
 
-            if(sonuc.veriler.length === 0)
+            if(sonuc.gen2Listesi.length === 0)
             {
-                mesajKutusunuGoster("No assets found for this wallet");
+                mesajKutusunuGoster("No object suitable for discount was found according to the price list");
                 return;
             }
 
-            sonuc.veriler.forEach(satir => 
+            // **DOM manipülasyonunu optimize etmek için documentFragment kullanıyoruz!**
+            const fragment = document.createDocumentFragment();
+
+            sonuc.gen2Listesi.forEach(satir => 
             {
                 const tokenDegeri = parseFloat(satir.token1_degeri);
-                document.getElementById("hisseMenusu_2_liste").innerHTML += 
+                const gen2Div = document.createElement("div");
+                gen2Div.classList.add("divNesneSecim");
+                gen2Div.innerHTML =
                 `
-                    <div class="divNesneSecim">
-                        <div class="divNesneSecimResim">
-                            <img src="${satir.image}" onclick="ilgiliSecimKutusunuSec(${satir.item_id})">
-                            <input type="checkbox" class="chbListedekiNesne" id="${satir.item_id}" data-value="0,0250">
+                    <div class="divNesneSecimResim">
+                        <img src="${satir.image}" class="nesneResim" id="${satir.item_id}">
+                        <input type="checkbox" class="chbListedekiNesne" id="gen2_${satir.item_id}" data-value="${tokenDegeri.toFixed(5)}">
+                    </div>
+                    <div class="divNesneSecimSatirlar">
+                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
+                        <p>ID</p>
+                        <p id="gen2_id">${satir.item_id}</p>
+                    </div>
+                    <div class="divNesneSecimSatirlar">
+                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
+                        <p>Level</p>
+                        <p id="gen2_levelDegeri">${satir.level}</p>
+                    </div>
+                    <div class="divNesneSecimSatirlar">
+                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
+                        <div class="divNesneSecimNadirlikResmi">
+                            <img src="images/${satir.rarity}.png">
                         </div>
-                        <div class="divNesneSecimSatirlar">
-                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
-                            <p>ID</p>
-                            <p id="nesne_id">${satir.item_id}</p>
-                        </div>
-                        <div class="divNesneSecimSatirlar">
-                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
-                            <p>Level</p>
-                            <p id="nesne_levelDegeri">${satir.level}</p>
-                        </div>
-                        <div class="divNesneSecimSatirlar">
-                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
-                            <div class="divNesneSecimNadirlikResmi">
-                                <img src="images/${satir.rarity}.png">
-                            </div>
-                            <div class="divNesneSecimNadirlikAdi">
-                                <p id="nesne_nadirlik">${satir.rarity.toUpperCase()}</p>
-                            </div>
-                        </div>
-                        <div class="divNesneSecimSatirlar">
-                            <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
-                            <p>AVAX value =</p>
-                            <p id="nesne_avaxDegeri">${tokenDegeri.toFixed(5)}</p>
+                        <div class="divNesneSecimNadirlikAdi">
+                            <p id="gen2_nadirlik">${satir.rarity.toUpperCase()}</p>
                         </div>
                     </div>
+                    <div class="divNesneSecimSatirlar">
+                        <img src="images/gen2YatayDetayArkaPlanResmi.png" class="nesneSecimDivleriArkaPlanResmi">
+                        <p>AVAX value =</p>
+                        <p id="gen2_avaxDegeri">${tokenDegeri.toFixed(5)}</p>
+                    </div>
                 `;
+
+                fragment.appendChild(gen2Div); // **Bütün öğeleri fragment içine ekledik**
             });
 
-            var secilenler = document.querySelectorAll('#hisseMenusu_2_liste .chbListedekiNesne');
-            secilenler.forEach(function(checkbox) 
+            // **Fragment içindeki tüm öğeleri DOM’a TEK SEFERDE ekle (büyük hız artışı sağlar!)**
+            document.getElementById("hisseMenusu_2_liste").appendChild(fragment);
+
+            // **Tek tek event eklemek yerine, bir kere eventListener ekleyerek performansı artırıyoruz!**
+            document.getElementById("hisseMenusu_2_liste").addEventListener("click", function(event) 
             {
-                // hisseMenusu_2_liste divi içindeki tüm .chbListedekiNesne için tıklama olayını takip etmesini sağla
-                // .chbListedekiNesne değişirse yeniListeyiGuncelle metodunu çalıştır, bu metod bütün .chbListedekiNesne 
-                // leri dolaşır
-                checkbox.addEventListener('change', yeniListeyiGuncelle);
+                const target = event.target;
+
+                // Eğer tıklanan eleman bir resimse (nesneResim sınıfına sahipse)
+                if (target.classList.contains("nesneResim")) 
+                {
+                    const itemId = target.id;
+                    const checkbox = document.getElementById(`gen2_${itemId}`);
+
+                    if (checkbox) 
+                    {
+                        checkbox.checked = !checkbox.checked; // Seçiliyse kaldır, değilse seç
+                        yeniListeyiGuncelle(); // Güncellenmiş listeyi tetikle
+                    }
+                }
             });
         }
         else
@@ -1162,25 +1150,10 @@ async function secenekleriYukle()
     }
 }
 
-function ilgiliSecimKutusunuSec(id) 
-{
-    // Checkbox'ların durumunu güncelleyen fonksiyon
-    const checkbox = document.getElementById(`${id}`);
-    checkbox.checked = !checkbox.checked; // Checkbox'ın checked durumunu değiştir
-    document.getElementById('chbHepsiniSec1').checked = false;
-    // document.getElementById('chbHepsiniSec2').checked = false;
-    yeniListeyiGuncelle(); // Seçimleri güncelle
-}
-
-function dakSecimKutusunuSec(id) 
-{
-    console.log("resime tıklandı");
-}
-
 function yeniListeyiGuncelle()
 {
     // hisseMenusu_2_liste divi içindeki .chbListedekiNesne leri dolaş, eğer seçili ise
-    // dataset.value değerini topla
+    // dataset.value (data-value) değerlerini topla
     const secimKutulari = document.querySelectorAll('#hisseMenusu_2_liste .chbListedekiNesne');
 
     var secilenSayisi = 0;
@@ -1195,21 +1168,155 @@ function yeniListeyiGuncelle()
         }
     });
 
-    document.getElementById('dak_toplamAvaxIndirimi').innerHTML = toplamNesneAvaxDegeri.toFixed(4).replace(".", ",");
-    // const dakLevelYukseltmeAvaxDegeri = parseFloat(document.getElementById("dak_sonrakiLevelAvaxUcreti").textContent);
-    const dakLevelYukseltmeAvaxDegeri = sayiFormatlama(document.getElementById("dak_sonrakiLevelAvaxUcreti").textContent, "islemeCevir");
+    document.getElementById('dak_toplamAvaxIndirimi').innerHTML = toplamNesneAvaxDegeri.toFixed(5).replace(".", ",");
+    const dakLevelYukseltmeAvaxDegeri = sayiFormatlama2(document.getElementById("dak_sonrakiLevelAvaxUcreti").textContent, "islemeCevir");
     if (dakLevelYukseltmeAvaxDegeri >= toplamNesneAvaxDegeri)
     {
-        document.getElementById('dak_toplamAvaxUcreti').innerHTML = (dakLevelYukseltmeAvaxDegeri - toplamNesneAvaxDegeri).toFixed(4).replace(".", ",");
+        document.getElementById('dak_toplamAvaxUcreti').innerHTML = (dakLevelYukseltmeAvaxDegeri - toplamNesneAvaxDegeri).toFixed(5).replace(".", ",");
     } 
     else 
     {
         mesajKutusunuGoster("The total AVAX value of the selected objects is more than the DAK leveling cost. The list will be reset, please select one by one.");
-        document.getElementById("hisseMenusu_2_liste").innerHTML = "";
         document.getElementById('chbHepsiniSec1').checked = false;
-        // document.getElementById('dak_toplamAvaxUcreti').innerHTML = dakLevelYukseltmeAvaxDegeri;
-        document.getElementById('dak_toplamAvaxUcreti').innerHTML = sayiFormatlama(dakLevelYukseltmeAvaxDegeri, "gorunumeCevir");
-        document.getElementById('dak_toplamAvaxIndirimi').innerHTML = "0,0000";
+        secimKutulari.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        document.getElementById('dak_toplamAvaxUcreti').textContent = sayiFormatlama2(dakLevelYukseltmeAvaxDegeri, "gorunumeCevir");
+        document.getElementById('dak_toplamAvaxIndirimi').textContent = "0,0000";
+    }
+}
+
+async function dakGuncelle() 
+{
+    try 
+    {
+        if(window.ethereum && window.ethereum.isMetaMask)
+        {
+            let cuzdanAdresleri = await ethereum.request({ method:'eth_accounts'});
+            if(cuzdanAdresleri.length === 0)
+            {
+                cuzdanAdresleri = await ethereum.request({method: 'eth_requestAccounts'});
+            }
+
+            const seciliCuzdanAdresi = cuzdanAdresleri[0];
+            const seciliZincir = await ethereum.request({ method: 'eth_chainId' });
+            const userAgent = navigator.userAgent;
+            const seciliDakId = document.querySelector(".hisseMenusu_1_islemlerDivi").querySelector("button").id;
+
+            if (!sessionStorage.getItem("session_id")) 
+            {
+                sessionStorage.setItem("session_id", Math.random().toString(36).substring(2, 11));
+            }
+
+            const sessionId = sessionStorage.getItem("session_id");
+
+            const seciliNesneler = [];
+            document.getElementById("hisseMenusu_2_liste").querySelectorAll('input.chbListedekiNesne:checked').forEach(checkbox =>
+            {
+                seciliNesneler.push(checkbox.id);
+            });
+
+            const dakGuncelleHazirla = await fetch('/app/dakGuncelleHazirla.php', 
+            {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(
+                {
+                    seciliCuzdanAdresi, 
+                    seciliZincir,
+                    userAgent,
+                    sessionId,
+                    seciliNesneler,
+                    seciliDakId
+                })
+            });
+
+            if(dakGuncelleHazirla.ok === false)
+            {
+                const errorData = await dakGuncelleHazirla.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                mesajKutusunuGoster("Sunucu hatası: " + (errorData.message || "Bilinmeyen hata"));
+                cuzdanBilgileriTemizlensinMi(true);
+                return false;
+            }
+
+            const dakGuncelleHazirlaSonucu = await dakGuncelleHazirla.json();
+            switch (dakGuncelleHazirlaSonucu.mesajKodu) 
+            {
+                case "40": break;
+                default: mesajKutusunuGoster(dakGuncelleHazirlaSonucu.mesajAciklamasi); return;
+            }
+
+            if(dakGuncelleHazirlaSonucu.mesajKodu == 40)
+            {
+                const secim = await onayKutusunuGoster(dakGuncelleHazirlaSonucu.mesajAciklamasi);
+                if(secim === "olustur")
+                {
+                    return;
+
+                    const dakGuncelleBaslat = await fetch('/app/dakGuncelleBaslat.php',
+                    {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(
+                        {
+                            from: seciliCuzdanAdresi,
+                            chainId: seciliZincir,
+                            dakId: seciliDakId,
+                            nonceNewPurchase: dakGuncelleHazirlaSonucu.nonceNewPurchase
+                        })
+                    });
+
+                    if(dakGuncelleBaslat.ok === false)
+                    {
+                        const sorguJsonMesaji = await dakGuncelleBaslat.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                        mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                        return false;
+                    }
+        
+                    const dakGuncelleBaslatSonucu = await dakGuncelleBaslat.json();
+                }
+                else
+                {
+                    return;
+                    
+                    const dakGuncelleDurdur = await fetch('/app/dakGuncelleDurdur.php',
+                    {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(
+                        {
+                            from: seciliCuzdanAdresi,
+                            chainId: seciliZincir,
+                            dakId: seciliDakId,
+                            nonceNewPurchase: dakGuncelleHazirlaSonucu.nonceNewPurchase
+                        })
+                    });
+
+                    if(dakGuncelleDurdur.ok === false)
+                    {
+                        const sorguJsonMesaji = await dakGuncelleDurdur.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                        mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                        return false;
+                    }
+        
+                    const dakGuncelleDurdurSonucu = await dakGuncelleDurdur.json();
+                }
+            }
+        }
+        else
+        {
+            mesajKutusunuGoster("Metamask yüklü değil! Lütfen Metamask cüzdanını yükleyin.");
+            cuzdanBilgileriTemizlensinMi(true);
+            return false;
+        }
+    } 
+    catch (hataMesaji) 
+    {
+        mesajKutusunuGoster(hataMesaji.message);
+        console.log(hataMesaji.stack);
     }
 }
 
