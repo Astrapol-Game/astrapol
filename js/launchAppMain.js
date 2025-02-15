@@ -341,19 +341,11 @@ async function dakMenusunuOlustur()
             const sonDakBilgisiYaniti = await sonDakBilgisi.json();
             switch (sonDakBilgisiYaniti.mesajKodu) 
             {
-                case "x": mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
-                case "1": mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
-                case "3": mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
-                case "4": mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
-                case "7": mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
                 case "9": if(await connectWallet()){break;}else{return;}
                 case "10": if(await connectWallet()){break;}else{return;}
-                case "11": mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
-                case "12": mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
                 case "15": break;
                 case "17": break;
-                case "18": mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
-                default: return;
+                default: mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
             }
 
             if(sonDakBilgisiYaniti.mesajKodu === "15")
@@ -1261,7 +1253,9 @@ async function dakGuncelle()
                         {
                             from: seciliCuzdanAdresi,
                             chainId: seciliZincir,
+                            userAgent: userAgent,
                             dakId: seciliDakId,
+                            sessionId: sessionId,
                             nonceNewPurchase: dakGuncelleHazirlaSonucu.nonceNewPurchase
                         })
                     });
@@ -1300,8 +1294,6 @@ async function dakGuncelle()
 
                         console.log('Mint İşlemi Tamamlandı:', txHashUpdate);
 
-                        return;
-
                         const dakGuncelleTxDogrula = await fetch('/app/dakGuncelleTxDogrula.php',
                         {
                             method: 'POST',
@@ -1311,6 +1303,9 @@ async function dakGuncelle()
                             {
                                 from: dakGuncelleBaslatSonucu.userWallet,
                                 chainId: zincirKodu,
+                                userAgent: userAgent,
+                                dakId: seciliDakId,
+                                sessionId: sessionId,
                                 nonceNewPurchase: dakGuncelleHazirlaSonucu.nonceNewPurchase,
                                 txHash: txHashUpdate
                             })
