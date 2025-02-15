@@ -1252,8 +1252,6 @@ async function dakGuncelle()
                 const secim = await onayKutusunuGoster(dakGuncelleHazirlaSonucu.mesajAciklamasi);
                 if(secim === "olustur")
                 {
-                    return;
-
                     const dakGuncelleBaslat = await fetch('/app/dakGuncelleBaslat.php',
                     {
                         method: 'POST',
@@ -1276,11 +1274,67 @@ async function dakGuncelle()
                     }
         
                     const dakGuncelleBaslatSonucu = await dakGuncelleBaslat.json();
+                    switch (dakGuncelleBaslatSonucu.mesajKodu) 
+                    {
+                        case "43": break;
+                        default: mesajKutusunuGoster(dakGuncelleBaslatSonucu.mesajAciklamasi); return;
+                    }
+
+                    if(dakGuncelleBaslatSonucu.mesajKodu === "43")
+                    {
+                        // İşlem Verilerini Hazırla
+                        const transactionParameters = {
+                            from: dakGuncelleBaslatSonucu.userWallet,
+                            to: dakGuncelleBaslatSonucu.contractAddress,
+                            value: dakGuncelleBaslatSonucu.priceHex,
+                            data: dakGuncelleBaslatSonucu.data,
+                        };
+
+                        console.log(transactionParameters);
+                        console.log(dakGuncelleBaslatSonucu.signature);
+
+                        const txHashUpdate = await ethereum.request({
+                            method: 'eth_sendTransaction',
+                            params: [transactionParameters],
+                        });
+
+                        console.log('Mint İşlemi Tamamlandı:', txHashUpdate);
+
+                        return;
+
+                        const dakGuncelleTxDogrula = await fetch('/app/dakGuncelleTxDogrula.php',
+                        {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(
+                            {
+                                from: dakGuncelleBaslatSonucu.userWallet,
+                                chainId: zincirKodu,
+                                nonceNewPurchase: dakGuncelleHazirlaSonucu.nonceNewPurchase,
+                                txHash: txHashUpdate
+                            })
+                        });
+    
+                        if(dakGuncelleTxDogrula.ok === false)
+                        {
+                            const sorguJsonMesaji = await dakGuncelleTxDogrula.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                            mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                            return false;
+                        }
+
+                        const dakGuncelleTxDogrulaSonucu = await dakGuncelleTxDogrula.json();
+                        switch (dakGuncelleTxDogrulaSonucu.mesajKodu)
+                        {
+                            case "20": mesajKutusunuGoster("NFT mint başarılı, ağ doğrulaması sağlandı, lütfen Share Hold sayfasına tekrar tıklayın"); break;
+                            default: mesajKutusunuGoster(dakGuncelleTxDogrulaSonucu.mesajAciklamasi); return;
+                        }
+                    }
                 }
                 else
                 {
                     return;
-                    
+
                     const dakGuncelleDurdur = await fetch('/app/dakGuncelleDurdur.php',
                     {
                         method: 'POST',
