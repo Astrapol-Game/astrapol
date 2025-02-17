@@ -1302,7 +1302,7 @@ async function dakGuncelle()
                             body: JSON.stringify(
                             {
                                 from: dakGuncelleBaslatSonucu.userWallet,
-                                chainId: zincirKodu,
+                                chainId: seciliZincir,
                                 userAgent: userAgent,
                                 dakId: seciliDakId,
                                 sessionId: sessionId,
@@ -1321,15 +1321,13 @@ async function dakGuncelle()
                         const dakGuncelleTxDogrulaSonucu = await dakGuncelleTxDogrula.json();
                         switch (dakGuncelleTxDogrulaSonucu.mesajKodu)
                         {
-                            case "20": mesajKutusunuGoster("NFT mint başarılı, ağ doğrulaması sağlandı, lütfen Share Hold sayfasına tekrar tıklayın"); break;
+                            case "45": mesajKutusunuGoster(dakGuncelleTxDogrulaSonucu.mesajAciklamasi); break;
                             default: mesajKutusunuGoster(dakGuncelleTxDogrulaSonucu.mesajAciklamasi); return;
                         }
                     }
                 }
                 else
                 {
-                    return;
-
                     const dakGuncelleDurdur = await fetch('/app/dakGuncelleDurdur.php',
                     {
                         method: 'POST',
@@ -1339,7 +1337,9 @@ async function dakGuncelle()
                         {
                             from: seciliCuzdanAdresi,
                             chainId: seciliZincir,
+                            userAgent: userAgent,
                             dakId: seciliDakId,
+                            sessionId: sessionId,
                             nonceNewPurchase: dakGuncelleHazirlaSonucu.nonceNewPurchase
                         })
                     });
@@ -1352,6 +1352,11 @@ async function dakGuncelle()
                     }
         
                     const dakGuncelleDurdurSonucu = await dakGuncelleDurdur.json();
+                    switch (dakGuncelleDurdurSonucu.mesajKodu)
+                    {
+                        case "46": mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); break;
+                        default: mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); return;
+                    }
                 }
             }
         }
