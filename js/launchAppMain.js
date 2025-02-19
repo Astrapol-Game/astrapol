@@ -453,7 +453,7 @@ async function dakMenusunuOlustur()
                                 </div>
                             </div>
 
-                            <div class="hisseMenusu_2_filtreNesne">
+                            <div class="hisseMenusu_2_filtreNesne" id="div_hisseMenusu_2_filtreNesne">
                                 <div class="nesneEtiketi">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Object</p>
@@ -582,6 +582,21 @@ async function dakMenusunuOlustur()
                         // listeninHepsiniSec(this); metodunda belirttiğim elemente göre işlemi yaptırabilmek
                         listeninHepsiniSec(this);
                     };
+                }
+
+                if(document.getElementById("div_hisseMenusu_2_filtreNesne"))
+                {
+                    document.getElementById("div_hisseMenusu_2_filtreNesne").addEventListener("change", function(event){
+                        if(event.target.type === "checkbox")
+                        {
+                            document.getElementById("div_hisseMenusu_2_filtreNesne").querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+                                if(checkbox !== event.target)
+                                {
+                                    checkbox.checked = false;
+                                }
+                            });
+                        }
+                    });
                 }
 
                 // DAK bilgisi yerleştirildi, sonraki satırlar çalışmasın
@@ -996,6 +1011,30 @@ async function secenekleriYukle()
 
         if(cuzdanBagliMi === true)
         {
+            if (!document.getElementById("hisseMenusu_2_liste").dataset.eventAdded)
+            {
+                document.getElementById("hisseMenusu_2_liste").addEventListener("click", function(event) 
+                {
+                    const target = event.target;
+
+                    // Eğer tıklanan eleman bir resimse (nesneResim sınıfına sahipse)
+                    if (target.classList.contains("nesneResim")) 
+                    {
+                        const itemId = target.id;
+                        const checkbox = document.getElementById(`gen2_${itemId}`);
+
+                        if (checkbox) 
+                        {
+                            checkbox.checked = !checkbox.checked; // Seçiliyse kaldır, değilse seç
+                            yeniListeyiGuncelle(); // Güncellenmiş listeyi tetikle
+                        }
+                    }
+                });
+
+                // **Event'in sadece bir kez eklenmesini sağlamak için işaret koyuyoruz**
+                document.getElementById("hisseMenusu_2_liste").dataset.eventAdded = "true";
+            }
+
             document.getElementById("hisseMenusu_2_liste").innerHTML = "";
             document.getElementById('chbHepsiniSec1').checked = false;
             // document.getElementById('chbHepsiniSec_2').checked = false;
@@ -1030,7 +1069,7 @@ async function secenekleriYukle()
             const zincirKodu = await ethereum.request({ method: 'eth_chainId' });
             const userAgent = navigator.userAgent;
 
-            const sorgu = await fetch('/app/gen2ListesiniGetir.php', 
+            const sorgu = await fetch('/app/nesneListesiniGetir.php', 
             {
                 method: 'POST',
                 credentials: 'include',
@@ -1059,7 +1098,7 @@ async function secenekleriYukle()
                 return;
             }
 
-            if(sonuc.gen2Listesi.length === 0)
+            if(sonuc.nesneListesi.length === 0)
             {
                 mesajKutusunuGoster("No object suitable for discount was found according to the price list");
                 return;
@@ -1068,7 +1107,7 @@ async function secenekleriYukle()
             // **DOM manipülasyonunu optimize etmek için documentFragment kullanıyoruz!**
             const fragment = document.createDocumentFragment();
 
-            sonuc.gen2Listesi.forEach(satir => 
+            sonuc.nesneListesi.forEach(satir => 
             {
                 const tokenDegeri = parseFloat(satir.token1_degeri);
                 const gen2Div = document.createElement("div");
@@ -1110,25 +1149,6 @@ async function secenekleriYukle()
 
             // **Fragment içindeki tüm öğeleri DOM’a TEK SEFERDE ekle (büyük hız artışı sağlar!)**
             document.getElementById("hisseMenusu_2_liste").appendChild(fragment);
-
-            // **Tek tek event eklemek yerine, bir kere eventListener ekleyerek performansı artırıyoruz!**
-            document.getElementById("hisseMenusu_2_liste").addEventListener("click", function(event) 
-            {
-                const target = event.target;
-
-                // Eğer tıklanan eleman bir resimse (nesneResim sınıfına sahipse)
-                if (target.classList.contains("nesneResim")) 
-                {
-                    const itemId = target.id;
-                    const checkbox = document.getElementById(`gen2_${itemId}`);
-
-                    if (checkbox) 
-                    {
-                        checkbox.checked = !checkbox.checked; // Seçiliyse kaldır, değilse seç
-                        yeniListeyiGuncelle(); // Güncellenmiş listeyi tetikle
-                    }
-                }
-            });
         }
         else
         {
