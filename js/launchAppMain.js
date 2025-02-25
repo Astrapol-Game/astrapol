@@ -1,4 +1,4 @@
-
+// v1
 
 document.addEventListener('DOMContentLoaded', async () =>
 {
@@ -172,17 +172,10 @@ async function connectWallet()
             }
 
             const seciliCuzdanAdresi = cuzdanAdresleri[0];
-            const chainId = await ethereum.request({ method: 'eth_chainId' });
+            const zincirKodu = await ethereum.request({ method: 'eth_chainId' });
             const userAgent = navigator.userAgent;
 
-            if (!sessionStorage.getItem("session_id")) 
-            {
-                sessionStorage.setItem("session_id", Math.random().toString(36).substring(2, 11));
-            }            
-
-            const sessionId = sessionStorage.getItem("session_id");
-
-            const baglantiDurumu = await fetch('/app/baglantiOlustur.php', 
+            const baglantiOlustur = await fetch('/app/baglantiOlustur.php', 
             {
                 method: 'POST',
                 credentials: 'include',
@@ -190,26 +183,26 @@ async function connectWallet()
                 body: JSON.stringify(
                 {
                     seciliCuzdanAdresi, 
-                    chainId,
-                    userAgent,
-                    sessionId
+                    zincirKodu,
+                    userAgent
                 })
             });
 
-            if(baglantiDurumu.ok === false)
+            if(baglantiOlustur.ok === false)
             {
-                const errorData = await baglantiDurumu.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                const errorData = await baglantiOlustur.json().catch(() => ({ message: "Bilinmeyen hata" }));
                 mesajKutusunuGoster("Sunucu hatası: " + (errorData.message || "Bilinmeyen hata"));
                 cuzdanBilgileriTemizlensinMi(true);
                 return false;
             }
 
-            const baglantiDurumuSonucu = await baglantiDurumu.json();
-            if (baglantiDurumuSonucu.mesajKodu === "6")
+            const baglantiOlusturSonucu = await baglantiOlustur.json();
+            if (baglantiOlusturSonucu.mesajKodu === "6")
             {
-                const onayliChainId = baglantiDurumuSonucu.chain;
-                const onayliCuzdanAdresi = baglantiDurumuSonucu.userWallet;
-                const onayliImzaMesaji = baglantiDurumuSonucu.signMessage;
+                const onayliChainId = baglantiOlusturSonucu.chain;
+                const onayliCuzdanAdresi = baglantiOlusturSonucu.userWallet;
+                const onayliImzaMesaji = baglantiOlusturSonucu.signMessage;
+                const sessionId = baglantiOlusturSonucu.session_id;
 
                 const imza = await ethereum.request(
                 {
@@ -227,6 +220,7 @@ async function connectWallet()
                         onayliCuzdanAdresi, 
                         onayliChainId,
                         userAgent,
+                        sessionId,
                         onayliImzaMesaji,
                         imza
                     })
@@ -245,6 +239,7 @@ async function connectWallet()
                 {
                     document.getElementById("p_cuzdanAdresi").innerText = baglantiOnaylaSonucu.userWallet;
                     document.getElementById("p_ag").innerText = baglantiOnaylaSonucu.chain;
+                    sessionStorage.setItem("session_id", sessionId);
                     return true;
                 }
                 else
@@ -254,15 +249,16 @@ async function connectWallet()
                     return false;
                 }
             }
-            else if(baglantiDurumuSonucu.mesajKodu === "14")
+            else if(baglantiOlusturSonucu.mesajKodu === "14")
             {
-                document.getElementById("p_cuzdanAdresi").innerText = baglantiDurumuSonucu.userWallet;
-                document.getElementById("p_ag").innerText = baglantiDurumuSonucu.chain;
+                document.getElementById("p_cuzdanAdresi").innerText = baglantiOlusturSonucu.userWallet;
+                document.getElementById("p_ag").innerText = baglantiOlusturSonucu.chain;
+                sessionStorage.setItem("session_id", sessionId);
                 return true;
             }
             else
             {
-                mesajKutusunuGoster(baglantiDurumuSonucu.mesajAciklamasi);
+                mesajKutusunuGoster(baglantiOlusturSonucu.mesajAciklamasi);
                 cuzdanBilgileriTemizlensinMi(true);
                 return false;
             }
@@ -311,14 +307,20 @@ async function dakMenusunuOlustur()
         document.getElementById('btnDakMenusu').disabled = true;
         document.getElementById("panel_3_2").innerHTML = "";
 
-        const cuzdanBagliMi = await connectWallet();
-        if(cuzdanBagliMi == true)
+        if (window.ethereum && window.ethereum.isMetaMask)
         {
-            const seciliCuzdanAdresi = document.getElementById("p_cuzdanAdresi").innerText;
+            let cuzdanAdresleri = await ethereum.request({ method:'eth_accounts'});
+            if(cuzdanAdresleri.length === 0)
+            {
+                cuzdanAdresleri = await ethereum.request({method: 'eth_requestAccounts'});
+            }
+
+            const seciliCuzdanAdresi = cuzdanAdresleri[0];
             const zincirKodu = await ethereum.request({ method: 'eth_chainId' });
             const userAgent = navigator.userAgent;
+            const sessionId = sessionStorage.getItem("session_id");
 
-            const sonDakBilgisi = await fetch('/app/kayitliSonDakBilgisiniGetir.php', 
+            const dakListesiniGetir = await fetch('/app/dakListesiniGetir.php', 
             {
                 method: 'POST',
                 credentials: 'include',
@@ -327,30 +329,33 @@ async function dakMenusunuOlustur()
                 {
                     seciliCuzdanAdresi,
                     zincirKodu,
-                    userAgent
+                    userAgent,
+                    sessionId
                 })
             });
 
-            if(sonDakBilgisi.ok === false)
+            if(dakListesiniGetir.ok === false)
             {
-                const sonDakBilgisiJsonMesaji = await sonDakBilgisi.json().catch(() => ({ message: "Bilinmeyen hata" }));
-                mesajKutusunuGoster("Json hatası: " + (sonDakBilgisiJsonMesaji.message || "Bilinmeyen hata"));
+                const dakListesiniGetirJsonMesaji = await dakListesiniGetir.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                mesajKutusunuGoster("Json hatası: " + (dakListesiniGetirJsonMesaji.message || "Bilinmeyen hata"));
                 return false;
             }
 
-            const sonDakBilgisiYaniti = await sonDakBilgisi.json();
-            switch (sonDakBilgisiYaniti.mesajKodu) 
+            const dakListesiniGetirSonucu= await dakListesiniGetir.json();
+            switch (dakListesiniGetirSonucu.mesajKodu) 
             {
+                case "8": if(await connectWallet()){break;}else{return;}
                 case "9": if(await connectWallet()){break;}else{return;}
                 case "10": if(await connectWallet()){break;}else{return;}
                 case "15": break;
                 case "17": break;
-                default: mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
+                case "34": if(await connectWallet()){break;}else{return;}
+                default: mesajKutusunuGoster(dakListesiniGetirSonucu.mesajAciklamasi); return;
             }
 
-            if(sonDakBilgisiYaniti.mesajKodu === "15")
+            if(dakListesiniGetirSonucu.mesajKodu === "15")
             {
-                const formattedPrice = sayiFormatlama2(sonDakBilgisiYaniti.dakOzellikleri[0].price, "gorunumeCevir");
+                const formattedPrice = sayiFormatlama2(dakListesiniGetirSonucu.dakOzellikleri[0].price, "gorunumeCevir");
                 const formattedTotalCost = formattedPrice;
 
                 document.getElementById("panel_3_2").innerHTML = 
@@ -358,31 +363,31 @@ async function dakMenusunuOlustur()
                     <div class="hisseMenusu_1">
                         <div class="dakDivi">
                             <div class="dakResmi">
-                                <img id="dakNftResmi" src="${sonDakBilgisiYaniti.dakOzellikleri[0].imageUrl}">
+                                <img id="dakNftResmi" src="${dakListesiniGetirSonucu.dakOzellikleri[0].imageUrl}">
                             </div>
                             <div class="dakDetaylari">
                                 <div class="dakDetaylariSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>ID =</p>
-                                    <p id="dak_idDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].id}</p>
+                                    <p id="dak_idDegeri">${dakListesiniGetirSonucu.dakOzellikleri[0].id}</p>
                                 </div>
 
                                 <div class="dakDetaylariSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Level =</p>
-                                    <p id="dak_levelDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].level}</p>
+                                    <p id="dak_levelDegeri">${dakListesiniGetirSonucu.dakOzellikleri[0].level}</p>
                                 </div>
 
                                 <div class="dakDetaylariSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Share Weight =</p>
-                                    <p id="dak_hisseAgirlikDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].sw}</p>
+                                    <p id="dak_hisseAgirlikDegeri">${dakListesiniGetirSonucu.dakOzellikleri[0].sw}</p>
                                 </div>
 
                                 <div class="dakDetaylariSatirlar">
                                     <img src="images/dakDetayArkaPlanResmi.png" class="dakDetayArkaPlanResmi">
                                     <p>Share Weight Next Level =</p>
-                                    <p id="dak_sonrakiLevelHisseAgirlikDegeri">${sonDakBilgisiYaniti.dakOzellikleri[0].swn}</p>
+                                    <p id="dak_sonrakiLevelHisseAgirlikDegeri">${dakListesiniGetirSonucu.dakOzellikleri[0].swn}</p>
                                 </div>
                             </div>
 
@@ -415,7 +420,7 @@ async function dakMenusunuOlustur()
                                     <label for="chbHepsiniSec1">Select All</label>
                                 </div>
                                 
-                                <button id="btnLevelUp_${sonDakBilgisiYaniti.dakOzellikleri[0].id}">
+                                <button id="btnLevelUp_${dakListesiniGetirSonucu.dakOzellikleri[0].id}">
                                     <img src="images/butonArkaPlanResmi.png" class="butonArkaPlanResmi">
                                     <p>Level Up</p>
                                 </button>
@@ -558,9 +563,9 @@ async function dakMenusunuOlustur()
                     };
                 }
 
-                if(!document.getElementById(`btnLevelUp_${sonDakBilgisiYaniti.dakOzellikleri[0].id}`).onclick)
+                if(!document.getElementById(`btnLevelUp_${dakListesiniGetirSonucu.dakOzellikleri[0].id}`).onclick)
                 {
-                    document.getElementById(`btnLevelUp_${sonDakBilgisiYaniti.dakOzellikleri[0].id}`).onclick = function()
+                    document.getElementById(`btnLevelUp_${dakListesiniGetirSonucu.dakOzellikleri[0].id}`).onclick = function()
                     {
                         dakGuncelle();
                     };
@@ -603,94 +608,213 @@ async function dakMenusunuOlustur()
                 return;
             }
 
-            if(sonDakBilgisiYaniti.mesajKodu === "17")
+            if(dakListesiniGetirSonucu.mesajKodu === "17")
             {
-                const secim = await onayKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi);
+                const secim = await onayKutusunuGoster(dakListesiniGetirSonucu.mesajAciklamasi);
                 if(secim === "olustur")
                 {
-                    const yeniMintBaslat = await fetch('/app/yeniDakMintHazirlaBaslat.php',
-                    {
+                    const dakMintHazirla = await fetch('/app/dakMintHazirla.php', {
                         method: 'POST',
                         credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(
                         {
-                            from: seciliCuzdanAdresi,
-                            chainId: zincirKodu,
-                            nonceNewPurchase: sonDakBilgisiYaniti.nonceNewPurchase
+                            seciliCuzdanAdresi,
+                            zincirKodu,
+                            userAgent,
+                            sessionId,
+                            nonceNewPurchase: dakListesiniGetirSonucu.nonceNewPurchase
                         })
                     });
 
-                    if(yeniMintBaslat.ok === false)
+                    if(dakMintHazirla.ok === false)
                     {
-                        const sorguJsonMesaji = await yeniMintBaslat.json().catch(() => ({ message: "Bilinmeyen hata" }));
-                        mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                        const dakMintHazirlaJsonMesaji = await dakMintHazirla.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                        mesajKutusunuGoster("Json hatası: " + (dakMintHazirlaJsonMesaji.message || "Bilinmeyen hata"));
                         return false;
                     }
-        
-                    const yeniMintBaslatSonucu = await yeniMintBaslat.json();
-                    switch (yeniMintBaslatSonucu.mesajKodu)
+
+                    const dakMintHazirlaSonucu = await dakMintHazirla.json();
+                    switch (dakMintHazirlaSonucu.mesajKodu) 
                     {
-                        case "x": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        case "1": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        case "3": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        case "4": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        case "7": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        case "21": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        case "25": break;
-                        case "27": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        case "29": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        case "30": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        case "31": mesajKutusunuGoster(yeniMintBaslatSonucu.mesajAciklamasi); return;
-                        default: return;
+                        case "49":break;                 
+                        default: mesajKutusunuGoster(dakMintHazirlaSonucu.mesajAciklamasi); break;
                     }
 
-                    if(yeniMintBaslatSonucu.mesajKodu === "25")
+                    if(dakMintHazirlaSonucu.mesajKodu === "49")
                     {
-                        // İşlem Verilerini Hazırla
-                        const transactionParameters = {
-                            from: yeniMintBaslatSonucu.userWallet,
-                            to: yeniMintBaslatSonucu.contractAddress,
-                            value: yeniMintBaslatSonucu.priceHex,
-                            data: yeniMintBaslatSonucu.data,
-                        };
-
-                        console.log(transactionParameters);
-                        console.log(yeniMintBaslatSonucu.signature);
-
-                        const txHashMint = await ethereum.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
-                        });
-
-                        console.log('Mint İşlemi Tamamlandı:', txHashMint);
-
-                        const yeniMintHashDogrula = await fetch('/app/yeniDakMintTxDogrula.php',
+                        const dakMintBaslat = await fetch('/app/dakMintBaslat.php',
                         {
                             method: 'POST',
                             credentials: 'include',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(
                             {
-                                from: yeniMintBaslatSonucu.userWallet,
-                                chainId: zincirKodu,
-                                nonceNewPurchase: sonDakBilgisiYaniti.nonceNewPurchase,
-                                txHash: txHashMint
+                                seciliCuzdanAdresi: seciliCuzdanAdresi,
+                                seciliZincir: zincirKodu,
+                                userAgent: userAgent,
+                                sessionId: sessionId,
+                                nonceNewPurchase: dakMintHazirlaSonucu.nonceNewPurchase
                             })
                         });
     
-                        if(yeniMintHashDogrula.ok === false)
+                        if(dakMintBaslat.ok === false)
                         {
-                            const sorguJsonMesaji = await yeniMintHashDogrula.json().catch(() => ({ message: "Bilinmeyen hata" }));
-                            mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                            const dakMintBaslatJsonMesaji = await dakMintBaslat.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                            mesajKutusunuGoster("Json hatası: " + (dakMintBaslatJsonMesaji.message || "Bilinmeyen hata"));
                             return false;
                         }
 
-                        const yeniMintHashDogrulaSonucu = await yeniMintHashDogrula.json();
-                        switch (yeniMintHashDogrulaSonucu.mesajKodu)
+                        // dak mint başlat ı bitiridim ama test etmedim, burada kaldım, devam edip tüm aşamaları uyumlu yap ve test et
+            
+                        const dakMintBaslatSonucu = await dakMintBaslat.json();
+                        switch (dakMintBaslatSonucu.mesajKodu) 
                         {
-                            case "20": mesajKutusunuGoster("NFT mint başarılı, ağ doğrulaması sağlandı, lütfen Share Hold sayfasına tekrar tıklayın"); break;
-                            default: mesajKutusunuGoster(yeniMintHashDogrulaSonucu.mesajAciklamasi); return;
+                            case "25": break;
+                            default: mesajKutusunuGoster(dakMintBaslatSonucu.mesajAciklamasi); break;
+                        }
+    
+                        if(dakMintBaslatSonucu.mesajKodu === "25")
+                        {
+                            // İşlem Verilerini Hazırla
+                            const transactionParameters = {
+                                from: dakMintBaslatSonucu.userWallet,
+                                to: dakMintBaslatSonucu.contractAddress,
+                                value: dakMintBaslatSonucu.priceHex,
+                                data: dakMintBaslatSonucu.data,
+                            };
+
+                            let txHashMint;
+                            try 
+                            {
+                                txHashMint = await ethereum.request({
+                                    method: 'eth_sendTransaction',
+                                    params: [transactionParameters],
+                                });
+                            } 
+                            catch (txHashMintHataMesaji) 
+                            {
+                                const dakMintDurdur = await fetch('/app/dakMintDurdur.php',
+                                {
+                                    method: 'POST',
+                                    credentials: 'include',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(
+                                    {
+                                        from: seciliCuzdanAdresi,
+                                        chainId: zincirKodu,
+                                        userAgent: userAgent,
+                                        sessionId: sessionId,
+                                        nonceNewPurchase: dakMintHazirlaSonucu.nonceNewPurchase
+                                    })
+                                });
+            
+                                if(dakMintDurdur.ok === false)
+                                {
+                                    const sorguJsonMesaji = await dakMintDurdur.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                                    mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                                    return false;
+                                }
+                    
+                                const dakGuncelleDurdurSonucu = await dakMintDurdur.json();
+                                switch (dakGuncelleDurdurSonucu.mesajKodu)
+                                {
+                                    case "21": mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); return;
+                                    default: mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); return;
+                                }
+                            }
+
+                            const dakMintTxDogrula = await fetch('/app/dakMintTxDogrula.php',
+                            {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(
+                                {
+                                    from: dakMintBaslatSonucu.userWallet,
+                                    chainId: zincirKodu,
+                                    userAgent: userAgent,
+                                    sessionId: sessionId,
+                                    nonceNewPurchase: dakMintHazirlaSonucu.nonceNewPurchase,
+                                    txHash: txHashMint
+                                })
+                            });
+        
+                            if(dakMintTxDogrula.ok === false)
+                            {
+                                const dakMintTxDogrulasonMesaji = await dakMintTxDogrula.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                                mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                                return false;
+                            }
+    
+                            const dakMintTxDogrulaSonucu = await dakMintTxDogrula.json();
+                            switch (dakMintTxDogrulaSonucu.mesajKodu)
+                            {
+                                case "20": mesajKutusunuGoster(dakMintTxDogrulaSonucu.mesajAciklamasi); break;
+                                default: mesajKutusunuGoster(dakMintTxDogrulaSonucu.mesajAciklamasi); return;
+                            }
+                        }
+                        else
+                        {
+                            const dakGuncelleDurdur = await fetch('/app/dakMintDurdur.php',
+                            {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(
+                                {
+                                    from: seciliCuzdanAdresi,
+                                    chainId: zincirKodu,
+                                    userAgent: userAgent,
+                                    sessionId: sessionId,
+                                    nonceNewPurchase: dakMintHazirlaSonucu.nonceNewPurchase
+                                })
+                            });
+        
+                            if(dakGuncelleDurdur.ok === false)
+                            {
+                                const sorguJsonMesaji = await dakGuncelleDurdur.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                                mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                                return false;
+                            }
+                
+                            const dakGuncelleDurdurSonucu = await dakGuncelleDurdur.json();
+                            switch (dakGuncelleDurdurSonucu.mesajKodu)
+                            {
+                                case "21": mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); break;
+                                default: mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        const dakGuncelleDurdur = await fetch('/app/dakMintDurdur.php',
+                        {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(
+                            {
+                                from: seciliCuzdanAdresi,
+                                chainId: zincirKodu,
+                                userAgent: userAgent,
+                                sessionId: sessionId,
+                                nonceNewPurchase: dakMintHazirlaSonucu.nonceNewPurchase
+                            })
+                        });
+    
+                        if(dakGuncelleDurdur.ok === false)
+                        {
+                            const sorguJsonMesaji = await dakGuncelleDurdur.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                            mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                            return false;
+                        }
+            
+                        const dakGuncelleDurdurSonucu = await dakGuncelleDurdur.json();
+                        switch (dakGuncelleDurdurSonucu.mesajKodu)
+                        {
+                            case "21": mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); break;
+                            default: mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); return;
                         }
                     }
                 }
@@ -702,7 +826,9 @@ async function dakMenusunuOlustur()
         }
         else
         {
-            mesajKutusunuGoster("Connect Wallet");
+            mesajKutusunuGoster("Metamask is not installed, please install Metamask.");
+            cuzdanBilgileriTemizlensinMi(true);
+            return false;
         }
     } 
     catch (hataMesaji) 
@@ -725,7 +851,7 @@ async function dakListesiMenusunuGoster()
         const zincirKodu = await ethereum.request({ method: 'eth_chainId' });
         const userAgent = navigator.userAgent;
 
-        const sonDakBilgisi = await fetch('/app/dakListesiniGetir.php', 
+        const dakListesiniGetir = await fetch('/app/dakListesiniGetir.php', 
         {
             method: 'POST',
             credentials: 'include',
@@ -738,21 +864,21 @@ async function dakListesiMenusunuGoster()
             })
         });
 
-        if(sonDakBilgisi.ok === false)
+        if(dakListesiniGetir.ok === false)
         {
-            const sonDakBilgisiJsonMesaji = await sonDakBilgisi.json().catch(() => ({ message: "Bilinmeyen hata" }));
-            mesajKutusunuGoster("Json hatası: " + (sonDakBilgisiJsonMesaji.message || "Bilinmeyen hata"));
+            const dakListesiniGetirJsonMesaji = await dakListesiniGetir.json().catch(() => ({ message: "Bilinmeyen hata" }));
+            mesajKutusunuGoster("Json hatası: " + (dakListesiniGetirJsonMesaji.message || "Bilinmeyen hata"));
             return false;
         }
 
-        const sonDakBilgisiYaniti = await sonDakBilgisi.json();
-        switch (sonDakBilgisiYaniti.mesajKodu) 
+        const dakListesiniGetirSonucu = await dakListesiniGetir.json();
+        switch (dakListesiniGetirSonucu.mesajKodu) 
         {
             case "15": break;
-            default: mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
+            default: mesajKutusunuGoster(dakListesiniGetirSonucu.mesajAciklamasi); return;
         }
 
-        if(sonDakBilgisiYaniti.dakListesi.length === 0)
+        if(dakListesiniGetirSonucu.dakListesi.length === 0)
         {
             mesajKutusunuGoster("No assets found for this wallet");
             return;
@@ -842,7 +968,7 @@ async function dakListesiMenusunuGoster()
             }
         });
 
-        sonDakBilgisiYaniti.dakListesi.forEach(satir => 
+        dakListesiniGetirSonucu.dakListesi.forEach(satir => 
         {
             const itemDiv = document.createElement("div");
             itemDiv.classList.add("dakAnaCerceve");
@@ -917,7 +1043,7 @@ async function seciliDakBilgileriniGuncelle()
         const zincirKodu = await ethereum.request({ method: 'eth_chainId' });
         const userAgent = navigator.userAgent;
 
-        const sonDakBilgisi = await fetch('/app/seciliDakGetir.php', 
+        const seciliDakGetir = await fetch('/app/seciliDakGetir.php', 
         {
             method: 'POST',
             credentials: 'include',
@@ -931,32 +1057,32 @@ async function seciliDakBilgileriniGuncelle()
             })
         });
 
-        if(sonDakBilgisi.ok === false)
+        if(seciliDakGetir.ok === false)
         {
-            const sonDakBilgisiJsonMesaji = await sonDakBilgisi.json().catch(() => ({ message: "Bilinmeyen hata" }));
-            mesajKutusunuGoster("Json hatası: " + (sonDakBilgisiJsonMesaji.message || "Bilinmeyen hata"));
+            const seciliDakGetirJsonMesaji = await seciliDakGetir.json().catch(() => ({ message: "Bilinmeyen hata" }));
+            mesajKutusunuGoster("Json hatası: " + (seciliDakGetirJsonMesaji.message || "Bilinmeyen hata"));
             return false;
         }
 
-        const sonDakBilgisiYaniti = await sonDakBilgisi.json();
-        switch (sonDakBilgisiYaniti.mesajKodu) 
+        const seciliDakGetirSonucu = await seciliDakGetir.json();
+        switch (seciliDakGetirSonucu.mesajKodu) 
         {
             case "36": break;
-            default: mesajKutusunuGoster(sonDakBilgisiYaniti.mesajAciklamasi); return;
+            default: mesajKutusunuGoster(seciliDakGetirSonucu.mesajAciklamasi); return;
         }
 
-        if(sonDakBilgisiYaniti.dakOzellikleri.length === 0)
+        if(seciliDakGetirSonucu.dakOzellikleri.length === 0)
         {
             mesajKutusunuGoster("No assets found for this wallet");
             return;
         }
 
-        document.getElementById("dakNftResmi").src = sonDakBilgisiYaniti.dakOzellikleri[0].image_url;
-        document.getElementById("dak_idDegeri").textContent  = sonDakBilgisiYaniti.dakOzellikleri[0].id;
-        document.getElementById("dak_levelDegeri").textContent  = sonDakBilgisiYaniti.dakOzellikleri[0].dak_level;
-        document.getElementById("dak_hisseAgirlikDegeri").textContent  = sonDakBilgisiYaniti.dakOzellikleri[0].share_weight;
-        document.getElementById("dak_sonrakiLevelHisseAgirlikDegeri").textContent  = sonDakBilgisiYaniti.dakOzellikleri[0].share_weight_next;
-        document.querySelector(".hisseMenusu_1_islemlerDivi").querySelector("button").id = `btnLevelUp_${sonDakBilgisiYaniti.dakOzellikleri[0].id}`;
+        document.getElementById("dakNftResmi").src = seciliDakGetirSonucu.dakOzellikleri[0].image_url;
+        document.getElementById("dak_idDegeri").textContent  = seciliDakGetirSonucu.dakOzellikleri[0].id;
+        document.getElementById("dak_levelDegeri").textContent  = seciliDakGetirSonucu.dakOzellikleri[0].dak_level;
+        document.getElementById("dak_hisseAgirlikDegeri").textContent  = seciliDakGetirSonucu.dakOzellikleri[0].share_weight;
+        document.getElementById("dak_sonrakiLevelHisseAgirlikDegeri").textContent  = seciliDakGetirSonucu.dakOzellikleri[0].share_weight_next;
+        document.querySelector(".hisseMenusu_1_islemlerDivi").querySelector("button").id = `btnLevelUp_${seciliDakGetirSonucu.dakOzellikleri[0].id}`;
     } 
     catch (hataMesaji) 
     {
@@ -998,9 +1124,31 @@ function inventoryMenusunuOlustur()
     
 }
 
-function transformationMergeMenusunuOlustur()
+async function transformationMergeMenusunuOlustur()
 {
-    
+    try 
+    {
+        document.getElementById('btnDonustur').disabled = true;
+        document.getElementById("panel_3_2").innerHTML = "";
+
+        const cuzdanBagliMi = await connectWallet();
+        if(cuzdanBagliMi == true)
+        {
+
+        }
+        else
+        {
+            mesajKutusunuGoster("Connect Wallet");
+        }
+    } 
+    catch (hataMesaji) 
+    {
+        mesajKutusunuGoster(hataMesaji.message);
+    }
+    finally
+    {
+        document.getElementById('btnDakMenusu').disabled = false;
+    }
 }
 
 async function secenekleriYukle() 
@@ -1213,14 +1361,8 @@ async function dakGuncelle()
             const seciliCuzdanAdresi = cuzdanAdresleri[0];
             const seciliZincir = await ethereum.request({ method: 'eth_chainId' });
             const userAgent = navigator.userAgent;
-            const seciliDakId = document.querySelector(".hisseMenusu_1_islemlerDivi").querySelector("button").id;
-
-            if (!sessionStorage.getItem("session_id")) 
-            {
-                sessionStorage.setItem("session_id", Math.random().toString(36).substring(2, 11));
-            }
-
             const sessionId = sessionStorage.getItem("session_id");
+            const seciliDakId = document.querySelector(".hisseMenusu_1_islemlerDivi").querySelector("button").id;
 
             const seciliNesneler = [];
             document.getElementById("hisseMenusu_2_liste").querySelectorAll('input.chbListedekiNesne:checked').forEach(checkbox =>
@@ -1304,15 +1446,45 @@ async function dakGuncelle()
                             data: dakGuncelleBaslatSonucu.data,
                         };
 
-                        console.log(transactionParameters);
-                        console.log(dakGuncelleBaslatSonucu.signature);
-
-                        const txHashUpdate = await ethereum.request({
-                            method: 'eth_sendTransaction',
-                            params: [transactionParameters],
-                        });
-
-                        console.log('Mint İşlemi Tamamlandı:', txHashUpdate);
+                        let txHashUpdate;
+                        try 
+                        {
+                            txHashUpdate = await ethereum.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters],
+                            });
+                        } 
+                        catch (txHashUpdateHataMesaji) 
+                        {
+                            const dakGuncelleDurdur = await fetch('/app/dakGuncelleDurdur.php',
+                            {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(
+                                {
+                                    from: seciliCuzdanAdresi,
+                                    chainId: seciliZincir,
+                                    userAgent: userAgent,
+                                    sessionId: sessionId,
+                                    nonceNewPurchase: dakGuncelleHazirlaSonucu.nonceNewPurchase
+                                })
+                            });
+        
+                            if(dakGuncelleDurdur.ok === false)
+                            {
+                                const sorguJsonMesaji = await dakGuncelleDurdur.json().catch(() => ({ message: "Bilinmeyen hata" }));
+                                mesajKutusunuGoster("Json hatası: " + (sorguJsonMesaji.message || "Bilinmeyen hata"));
+                                return false;
+                            }
+                
+                            const dakGuncelleDurdurSonucu = await dakGuncelleDurdur.json();
+                            switch (dakGuncelleDurdurSonucu.mesajKodu)
+                            {
+                                case "46": mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); return;
+                                default: mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); return;
+                            }
+                        }
 
                         const dakGuncelleTxDogrula = await fetch('/app/dakGuncelleTxDogrula.php',
                         {
@@ -1374,7 +1546,7 @@ async function dakGuncelle()
                     const dakGuncelleDurdurSonucu = await dakGuncelleDurdur.json();
                     switch (dakGuncelleDurdurSonucu.mesajKodu)
                     {
-                        case "46": mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); break;
+                        case "46": mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); return;
                         default: mesajKutusunuGoster(dakGuncelleDurdurSonucu.mesajAciklamasi); return;
                     }
                 }
