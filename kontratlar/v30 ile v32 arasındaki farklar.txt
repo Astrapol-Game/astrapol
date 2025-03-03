@@ -1,0 +1,2 @@
+kontratın her zaman kullandığımız mint update fonksiyonları çalıştı ancak yeni yaptığımız transfer işlemleri çalışmadı
+sanırım _transferControl ün call ile sorgulanmasını sağlamalıyız, sorunu hiç incelemedim nerede diye

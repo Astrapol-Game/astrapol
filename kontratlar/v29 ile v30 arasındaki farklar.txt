@@ -1,0 +1,29 @@
+payable(paymentAddress).transfer(price); 
+
+mint ve levelUpdate fonksyionlarından kaldırıldı ve yerine aşağıdaki yazıldı
+
+(bool success, ) = paymentAddress.call{value: price}("");
+require(success, "Payment failed");
+
+--------------------------------------------------------------
+
+
+if(msg.value > price)
+        {
+            payable(msg.sender).transfer(msg.value - price);
+        }
+
+mint ve levelUpdate fonksiyonlarında aşağıdaki şekilde güncellendi
+
+if(msg.value > price) 
+        {
+            (bool refundSuccess, ) = payable(msg.sender).call{value: msg.value - price}("");
+            require(refundSuccess, "Refund failed");
+        }
+
+--------------------------------------------------------------------------------------------
+
+recoverSigner fonksiyonuna aşağıdaki satırlar eklendi
+
+require(uint256(s) > 0 && uint256(s) <= 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff, "Invalid S value");
+require(v == 27 || v == 28, "Invalid V value");
